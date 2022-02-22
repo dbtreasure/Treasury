@@ -15,9 +15,7 @@ struct ContentView: View {
                 MonthView()
                     .navigationBarTitle("")
                     .navigationBarHidden(true)
-            }
-            .frame(width: .infinity, height: .infinity, alignment: .center)
-            
+            }.accentColor(.black)
         }
     }
 }

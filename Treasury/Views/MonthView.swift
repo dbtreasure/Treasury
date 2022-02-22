@@ -1,5 +1,5 @@
 //
-//  SubAccountView.swift
+//  MonthView.swift
 //  Treasury
 //
 //  Created by Daniel Treasure on 2/21/22.
@@ -7,23 +7,44 @@
 
 import SwiftUI
 
-struct SubAccountView: View {
+struct MonthView: View {
     @State private var budget = APIBudgetLoader.load()
-    let account: SubAccount
-    init(account: SubAccount) {
-        self.account = account
-    }
     var body: some View {
         VStack {
+            HStack(
+                alignment: .center, spacing: 10
+            ) {
+                Text("February")
+                    .fontWeight(.bold)
+                    .multilineTextAlignment(.leading)
+                    .font(.largeTitle)
+                Spacer()
+                NavigationLink(destination: MonthView()) {
+                    Image(systemName: "plus")
+                        .foregroundColor(Color.black)
+                        .imageScale(.large)
+                        .font(Font.title3.bold())
+                }
+            }
             ScrollView {
                 VStack(alignment: .center, spacing: 10) {
-                    ForEach(account.transactions, id: \.id) { transaction in
-                        HStack(alignment: .center, spacing: 10) {
-                            Text(transaction.description)
-                                .font(.title3)
-                            Spacer()
-                            Text("$\(transaction.total)")
+                    ForEach(budget.getAccounts(), id: \.id) { account in
+                        NavigationLink(destination: SubAccountView(account: account)) {
+                            HStack(alignment: .center, spacing: 10) {
+                                Text(account.name)
+                                    .font(.title3)
+                                    .foregroundColor(.black)
+                                Spacer()
+                                (
+                                    account.getRemainingFunds() < 0 ?
+                                    Text("$\(account.getRemainingFunds())")
+                                        .foregroundColor(.red) :
+                                    Text("$\(account.getRemainingFunds())")
+                                        .foregroundColor(.black)
+                                )
+                            }
                         }
+                        
                     }
                 }
             }
@@ -42,7 +63,7 @@ struct SubAccountView: View {
                         .font(.title2)
                         .fontWeight(.semibold)
                     Spacer()
-                    Text("$\(account.budget)")
+                    Text("$\(budget.getTotalBudget())")
                         .font(.title2)
                         .fontWeight(.semibold)
                 }
@@ -53,8 +74,8 @@ struct SubAccountView: View {
                         .font(.title2)
                         .fontWeight(.semibold)
                     Spacer()
-                    (account.sumOfTransactions() > 0 ? Text("-$\(account.sumOfTransactions())") :
-                        Text("$\(account.sumOfTransactions())"))
+                    (budget.getTotalTransactions() > 0 ? Text("-$\(budget.getTotalTransactions())") :
+                        Text("$\(budget.getTotalTransactions())"))
                         .font(.title2)
                         .fontWeight(.semibold)
                 }
@@ -68,21 +89,23 @@ struct SubAccountView: View {
                         .fontWeight(.semibold)
                     Spacer()
                     (
-                        account.getRemainingFunds() < 0 ?
-                        Text("$\(account.getRemainingFunds())")
+                        budget.getRemainingFunds() < 0 ?
+                        Text("$\(budget.getRemainingFunds())")
                             .font(.title2)
                             .fontWeight(.semibold)
                             .foregroundColor(.red) :
-                        Text("$\(account.getRemainingFunds())")
+                        Text("$\(budget.getRemainingFunds())")
                             .font(.title2)
                             .fontWeight(.semibold)
                     )
                 }
             }
         }
-        .frame(width: .infinity, height: .infinity, alignment: .center)
+        
         .padding(.leading)
         .padding(.trailing)
-        .navigationBarTitle(self.account.name)
+        .navigationBarTitle("")
+        .navigationBarHidden(true)
     }
+
 }
