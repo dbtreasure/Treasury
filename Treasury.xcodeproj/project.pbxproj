@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		378D1A3627C374E300BCE00B /* BudgetLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378D1A3527C374E300BCE00B /* BudgetLoader.swift */; };
+		378D1A3827C43F0700BCE00B /* MonthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378D1A3727C43F0700BCE00B /* MonthView.swift */; };
+		378D1A3A27C4512900BCE00B /* budget.plist in Resources */ = {isa = PBXBuildFile; fileRef = 378D1A3927C4512900BCE00B /* budget.plist */; };
+		378D1A3E27C468AE00BCE00B /* SubAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378D1A3D27C468AE00BCE00B /* SubAccountView.swift */; };
 		37AACAF227C18A6400F52F69 /* TreasuryApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37AACAF127C18A6400F52F69 /* TreasuryApp.swift */; };
 		37AACAF427C18A6400F52F69 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37AACAF327C18A6400F52F69 /* ContentView.swift */; };
 		37AACAF627C18A6600F52F69 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37AACAF527C18A6600F52F69 /* Assets.xcassets */; };
@@ -17,6 +21,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		378D1A3527C374E300BCE00B /* BudgetLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetLoader.swift; sourceTree = "<group>"; };
+		378D1A3727C43F0700BCE00B /* MonthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthView.swift; sourceTree = "<group>"; };
+		378D1A3927C4512900BCE00B /* budget.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = budget.plist; sourceTree = "<group>"; };
+		378D1A3D27C468AE00BCE00B /* SubAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubAccountView.swift; sourceTree = "<group>"; };
 		37AACAEE27C18A6400F52F69 /* Treasury.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Treasury.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		37AACAF127C18A6400F52F69 /* TreasuryApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreasuryApp.swift; sourceTree = "<group>"; };
 		37AACAF327C18A6400F52F69 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -38,6 +46,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		378D1A3C27C4531200BCE00B /* documents */ = {
+			isa = PBXGroup;
+			children = (
+				378D1A3927C4512900BCE00B /* budget.plist */,
+			);
+			path = documents;
+			sourceTree = "<group>";
+		};
 		37AACAE527C18A6400F52F69 = {
 			isa = PBXGroup;
 			children = (
@@ -57,6 +73,7 @@
 		37AACAF027C18A6400F52F69 /* Treasury */ = {
 			isa = PBXGroup;
 			children = (
+				378D1A3C27C4531200BCE00B /* documents */,
 				37AACAF127C18A6400F52F69 /* TreasuryApp.swift */,
 				37AACAF327C18A6400F52F69 /* ContentView.swift */,
 				37AACAF527C18A6600F52F69 /* Assets.xcassets */,
@@ -64,6 +81,9 @@
 				37AACAFF27C2D25500F52F69 /* SubAccount.swift */,
 				37AACB0127C2D2F000F52F69 /* Transaction.swift */,
 				37AACB0327C2D3B100F52F69 /* Budget.swift */,
+				378D1A3527C374E300BCE00B /* BudgetLoader.swift */,
+				378D1A3727C43F0700BCE00B /* MonthView.swift */,
+				378D1A3D27C468AE00BCE00B /* SubAccountView.swift */,
 			);
 			path = Treasury;
 			sourceTree = "<group>";
@@ -136,6 +156,7 @@
 			files = (
 				37AACAF927C18A6600F52F69 /* Preview Assets.xcassets in Resources */,
 				37AACAF627C18A6600F52F69 /* Assets.xcassets in Resources */,
+				378D1A3A27C4512900BCE00B /* budget.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -147,10 +168,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				37AACB0027C2D25500F52F69 /* SubAccount.swift in Sources */,
+				378D1A3E27C468AE00BCE00B /* SubAccountView.swift in Sources */,
+				378D1A3627C374E300BCE00B /* BudgetLoader.swift in Sources */,
 				37AACAF427C18A6400F52F69 /* ContentView.swift in Sources */,
 				37AACB0427C2D3B100F52F69 /* Budget.swift in Sources */,
 				37AACB0227C2D2F000F52F69 /* Transaction.swift in Sources */,
 				37AACAF227C18A6400F52F69 /* TreasuryApp.swift in Sources */,
+				378D1A3827C43F0700BCE00B /* MonthView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

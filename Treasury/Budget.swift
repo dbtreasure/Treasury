@@ -7,15 +7,17 @@
 
 import Foundation
 
-class Budget {
-    let id = UUID()
+class Budget: Codable {
+    var id: UUID
     private var accounts: [SubAccount] = [
         SubAccount(name: "Groceries", budget: 300),
         SubAccount(name: "Hello Fresh", budget: 500),
         SubAccount(name: "Household", budget: 30),
         SubAccount(name: "Coffee", budget: 50),
         SubAccount(name: "Subscriptions", budget: 225),
-        SubAccount(name: "Utilities", budget: 110)
+        SubAccount(name: "Utilities", budget: 110),
+        SubAccount(name: "Restaurant", budget: 300),
+        SubAccount(name: "Insurance", budget: 170)
     ]
     
     func getAccounts() -> [SubAccount] {
@@ -47,11 +49,14 @@ class Budget {
     }
     
     init() {
-        for _ in 0...10 {
-            let cost = Int.random(in: 0 ..< 100)
-            let subAccount =  self.accounts.randomElement()!
-            let transaction = Transaction(date: Date.now, subAccount: subAccount, total: cost, description: "Just some things")
-            subAccount.addTransaction(transaction: transaction)
+        self.id = UUID()
+        for account in self.accounts {
+            for _ in 0...10 {
+                let cost = Int.random(in: 0 ..< 100)
+                let transaction = Transaction(date: Date.now, subAccount: account, total: cost, description: "Just one thing for $\(cost)")
+                account.addTransaction(transaction: transaction)
+            }
         }
+        
     }
 }

@@ -7,18 +7,18 @@
 
 import Foundation
 
-
-class Transaction: Identifiable {
-    let date: Date
-    let subAccount: SubAccount
-    let total: Int
-    let description: String
-    let id = UUID()
+class Transaction: Identifiable, Codable {
+    var date: Date
+    var subAccount: SubAccount
+    var total: Int
+    var description: String
+    var id: UUID
     
     init(date: Date, subAccount: SubAccount, total: Int, description: String) {
         self.date = date
         self.subAccount = subAccount
         self.total = total
         self.description = description
+        self.id = UUID()
     }
 }
