@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		373D350E27DC7C9C0046DAD4 /* BudgetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373D350D27DC7C9C0046DAD4 /* BudgetViewModel.swift */; };
+		373D351127DC81700046DAD4 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373D351027DC81700046DAD4 /* SignInView.swift */; };
+		373D351427DC82720046DAD4 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 373D351327DC82720046DAD4 /* FirebaseAuth */; };
+		373D351627DC82720046DAD4 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 373D351527DC82720046DAD4 /* FirebaseDatabase */; };
+		373D351827DC82720046DAD4 /* FirebaseDatabaseSwift-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = 373D351727DC82720046DAD4 /* FirebaseDatabaseSwift-Beta */; };
+		373D351A27DC82B90046DAD4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 373D351927DC82B90046DAD4 /* GoogleService-Info.plist */; };
+		373D351C27DC853E0046DAD4 /* ViewRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373D351B27DC853E0046DAD4 /* ViewRouter.swift */; };
 		378D1A3627C374E300BCE00B /* BudgetLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378D1A3527C374E300BCE00B /* BudgetLoader.swift */; };
 		378D1A3827C43F0700BCE00B /* MonthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378D1A3727C43F0700BCE00B /* MonthView.swift */; };
 		378D1A3A27C4512900BCE00B /* budget.plist in Resources */ = {isa = PBXBuildFile; fileRef = 378D1A3927C4512900BCE00B /* budget.plist */; };
@@ -18,10 +25,15 @@
 		37AACAF927C18A6600F52F69 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37AACAF827C18A6600F52F69 /* Preview Assets.xcassets */; };
 		37AACB0027C2D25500F52F69 /* SubAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37AACAFF27C2D25500F52F69 /* SubAccount.swift */; };
 		37AACB0227C2D2F000F52F69 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37AACB0127C2D2F000F52F69 /* Transaction.swift */; };
-		37AACB0427C2D3B100F52F69 /* Budget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37AACB0327C2D3B100F52F69 /* Budget.swift */; };
+		37AACB0427C2D3B100F52F69 /* BudgetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37AACB0327C2D3B100F52F69 /* BudgetModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		373D350D27DC7C9C0046DAD4 /* BudgetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetViewModel.swift; sourceTree = "<group>"; };
+		373D350F27DC80720046DAD4 /* Treasury.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Treasury.entitlements; sourceTree = "<group>"; };
+		373D351027DC81700046DAD4 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
+		373D351927DC82B90046DAD4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		373D351B27DC853E0046DAD4 /* ViewRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewRouter.swift; sourceTree = "<group>"; };
 		378D1A3527C374E300BCE00B /* BudgetLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetLoader.swift; sourceTree = "<group>"; };
 		378D1A3727C43F0700BCE00B /* MonthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthView.swift; sourceTree = "<group>"; };
 		378D1A3927C4512900BCE00B /* budget.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = budget.plist; sourceTree = "<group>"; };
@@ -34,7 +46,7 @@
 		37AACAF827C18A6600F52F69 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		37AACAFF27C2D25500F52F69 /* SubAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubAccount.swift; sourceTree = "<group>"; };
 		37AACB0127C2D2F000F52F69 /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
-		37AACB0327C2D3B100F52F69 /* Budget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Budget.swift; sourceTree = "<group>"; };
+		37AACB0327C2D3B100F52F69 /* BudgetModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,12 +54,23 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				373D351827DC82720046DAD4 /* FirebaseDatabaseSwift-Beta in Frameworks */,
+				373D351627DC82720046DAD4 /* FirebaseDatabase in Frameworks */,
+				373D351427DC82720046DAD4 /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		373D350C27DC7C4B0046DAD4 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				373D350D27DC7C9C0046DAD4 /* BudgetViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
 		378D1A3C27C4531200BCE00B /* documents */ = {
 			isa = PBXGroup;
 			children = (
@@ -60,7 +83,7 @@
 			isa = PBXGroup;
 			children = (
 				37AACAFF27C2D25500F52F69 /* SubAccount.swift */,
-				37AACB0327C2D3B100F52F69 /* Budget.swift */,
+				37AACB0327C2D3B100F52F69 /* BudgetModel.swift */,
 				37AACB0127C2D2F000F52F69 /* Transaction.swift */,
 			);
 			path = Models;
@@ -72,6 +95,7 @@
 				378D1A3727C43F0700BCE00B /* MonthView.swift */,
 				378D1A3D27C468AE00BCE00B /* SubAccountView.swift */,
 				378D1A4127C482C200BCE00B /* AddTransactionView.swift */,
+				373D351027DC81700046DAD4 /* SignInView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -95,6 +119,9 @@
 		37AACAF027C18A6400F52F69 /* Treasury */ = {
 			isa = PBXGroup;
 			children = (
+				373D351927DC82B90046DAD4 /* GoogleService-Info.plist */,
+				373D350F27DC80720046DAD4 /* Treasury.entitlements */,
+				373D350C27DC7C4B0046DAD4 /* ViewModels */,
 				378D1A4027C4827700BCE00B /* Views */,
 				378D1A3F27C4826500BCE00B /* Models */,
 				378D1A3C27C4531200BCE00B /* documents */,
@@ -103,6 +130,7 @@
 				37AACAF527C18A6600F52F69 /* Assets.xcassets */,
 				37AACAF727C18A6600F52F69 /* Preview Content */,
 				378D1A3527C374E300BCE00B /* BudgetLoader.swift */,
+				373D351B27DC853E0046DAD4 /* ViewRouter.swift */,
 			);
 			path = Treasury;
 			sourceTree = "<group>";
@@ -131,6 +159,11 @@
 			dependencies = (
 			);
 			name = Treasury;
+			packageProductDependencies = (
+				373D351327DC82720046DAD4 /* FirebaseAuth */,
+				373D351527DC82720046DAD4 /* FirebaseDatabase */,
+				373D351727DC82720046DAD4 /* FirebaseDatabaseSwift-Beta */,
+			);
 			productName = Treasury;
 			productReference = 37AACAEE27C18A6400F52F69 /* Treasury.app */;
 			productType = "com.apple.product-type.application";
@@ -159,6 +192,9 @@
 				Base,
 			);
 			mainGroup = 37AACAE527C18A6400F52F69;
+			packageReferences = (
+				373D351227DC82720046DAD4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			productRefGroup = 37AACAEF27C18A6400F52F69 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -174,6 +210,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				37AACAF927C18A6600F52F69 /* Preview Assets.xcassets in Resources */,
+				373D351A27DC82B90046DAD4 /* GoogleService-Info.plist in Resources */,
 				37AACAF627C18A6600F52F69 /* Assets.xcassets in Resources */,
 				378D1A3A27C4512900BCE00B /* budget.plist in Resources */,
 			);
@@ -189,11 +226,14 @@
 				37AACB0027C2D25500F52F69 /* SubAccount.swift in Sources */,
 				378D1A3E27C468AE00BCE00B /* SubAccountView.swift in Sources */,
 				378D1A3627C374E300BCE00B /* BudgetLoader.swift in Sources */,
+				373D351C27DC853E0046DAD4 /* ViewRouter.swift in Sources */,
 				37AACAF427C18A6400F52F69 /* ContentView.swift in Sources */,
-				37AACB0427C2D3B100F52F69 /* Budget.swift in Sources */,
+				37AACB0427C2D3B100F52F69 /* BudgetModel.swift in Sources */,
+				373D350E27DC7C9C0046DAD4 /* BudgetViewModel.swift in Sources */,
 				37AACB0227C2D2F000F52F69 /* Transaction.swift in Sources */,
 				37AACAF227C18A6400F52F69 /* TreasuryApp.swift in Sources */,
 				378D1A3827C43F0700BCE00B /* MonthView.swift in Sources */,
+				373D351127DC81700046DAD4 /* SignInView.swift in Sources */,
 				378D1A4227C482C200BCE00B /* AddTransactionView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -322,6 +362,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Treasury/Treasury.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Treasury/Preview Content\"";
@@ -351,6 +392,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Treasury/Treasury.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Treasury/Preview Content\"";
@@ -397,6 +439,35 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		373D351227DC82720046DAD4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		373D351327DC82720046DAD4 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 373D351227DC82720046DAD4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		373D351527DC82720046DAD4 /* FirebaseDatabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 373D351227DC82720046DAD4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDatabase;
+		};
+		373D351727DC82720046DAD4 /* FirebaseDatabaseSwift-Beta */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 373D351227DC82720046DAD4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = "FirebaseDatabaseSwift-Beta";
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 37AACAE627C18A6400F52F69 /* Project object */;
 }
