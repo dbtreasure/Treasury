@@ -86,8 +86,7 @@ struct MonthView: View {
                 }
             }
         }
-        .padding(.leading)
-        .padding(.trailing)
+        .padding([.leading, .trailing])
         .navigationBarTitle("March")
         .navigationBarItems(trailing:
                 Text("Add Category")
@@ -97,10 +96,6 @@ struct MonthView: View {
 }
 struct MonthView_Previews: PreviewProvider {
     static var previews: some View {
-        VStack {
-            NavigationView {
-                MonthView()
-            }.accentColor(.black)
-        }
+        MonthView()
     }
 }

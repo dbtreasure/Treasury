@@ -84,8 +84,7 @@ struct SubAccountView: View {
                 }
             }
         }
-        .padding(.leading)
-        .padding(.trailing)
+        .padding([.leading, .trailing])
         .navigationBarTitle(account.name)
         .navigationBarItems(trailing:
                                 NavigationLink(destination: AddTransactionView(account: account)) {
@@ -100,11 +99,6 @@ struct SubAccountView: View {
 
 struct SubAccountView_Previews: PreviewProvider {
     static var previews: some View {
-        VStack {
-            NavigationView {
-                SubAccountView(account: APIBudgetLoader.load().getAccounts().randomElement()!)
-            }
-        }
-        
+        SubAccountView(account: APIBudgetLoader.load().getAccounts().randomElement()!)
     }
 }
