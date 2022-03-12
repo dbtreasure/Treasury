@@ -34,6 +34,7 @@ struct SignInView: View {
                     .frame(width: 360, height: 50)
                     .background(.thinMaterial)
                     .cornerRadius(10)
+                    .foregroundStyle(.black)
             }
             Spacer()
             HStack {
@@ -42,6 +43,8 @@ struct SignInView: View {
                     viewRouter.currentPage = .signUpPage
                 }) {
                     Text("Sign Up")
+                        .bold()
+                        .foregroundStyle(.black)
                 }
             }
                 .opacity(0.9)

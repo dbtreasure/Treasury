@@ -10,13 +10,15 @@ import Firebase
 
 @main
 struct TreasuryApp: App {
+    @StateObject var viewRouter = ViewRouter()
+    
     init() {
         FirebaseApp.configure()
     }
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            IndexView().environmentObject(viewRouter)
         }
     }
 }

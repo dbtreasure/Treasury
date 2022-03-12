@@ -14,13 +14,15 @@
 		373D351827DC82720046DAD4 /* FirebaseDatabaseSwift-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = 373D351727DC82720046DAD4 /* FirebaseDatabaseSwift-Beta */; };
 		373D351A27DC82B90046DAD4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 373D351927DC82B90046DAD4 /* GoogleService-Info.plist */; };
 		373D351C27DC853E0046DAD4 /* ViewRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373D351B27DC853E0046DAD4 /* ViewRouter.swift */; };
+		373D351E27DCFF790046DAD4 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373D351D27DCFF790046DAD4 /* SignUpView.swift */; };
+		373D352027DD01DB0046DAD4 /* IndexView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373D351F27DD01DB0046DAD4 /* IndexView.swift */; };
 		378D1A3627C374E300BCE00B /* BudgetLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378D1A3527C374E300BCE00B /* BudgetLoader.swift */; };
 		378D1A3827C43F0700BCE00B /* MonthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378D1A3727C43F0700BCE00B /* MonthView.swift */; };
 		378D1A3A27C4512900BCE00B /* budget.plist in Resources */ = {isa = PBXBuildFile; fileRef = 378D1A3927C4512900BCE00B /* budget.plist */; };
 		378D1A3E27C468AE00BCE00B /* SubAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378D1A3D27C468AE00BCE00B /* SubAccountView.swift */; };
 		378D1A4227C482C200BCE00B /* AddTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378D1A4127C482C200BCE00B /* AddTransactionView.swift */; };
 		37AACAF227C18A6400F52F69 /* TreasuryApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37AACAF127C18A6400F52F69 /* TreasuryApp.swift */; };
-		37AACAF427C18A6400F52F69 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37AACAF327C18A6400F52F69 /* ContentView.swift */; };
+		37AACAF427C18A6400F52F69 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37AACAF327C18A6400F52F69 /* HomeView.swift */; };
 		37AACAF627C18A6600F52F69 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37AACAF527C18A6600F52F69 /* Assets.xcassets */; };
 		37AACAF927C18A6600F52F69 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37AACAF827C18A6600F52F69 /* Preview Assets.xcassets */; };
 		37AACB0027C2D25500F52F69 /* SubAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37AACAFF27C2D25500F52F69 /* SubAccount.swift */; };
@@ -34,6 +36,8 @@
 		373D351027DC81700046DAD4 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		373D351927DC82B90046DAD4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		373D351B27DC853E0046DAD4 /* ViewRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewRouter.swift; sourceTree = "<group>"; };
+		373D351D27DCFF790046DAD4 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
+		373D351F27DD01DB0046DAD4 /* IndexView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexView.swift; sourceTree = "<group>"; };
 		378D1A3527C374E300BCE00B /* BudgetLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetLoader.swift; sourceTree = "<group>"; };
 		378D1A3727C43F0700BCE00B /* MonthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthView.swift; sourceTree = "<group>"; };
 		378D1A3927C4512900BCE00B /* budget.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = budget.plist; sourceTree = "<group>"; };
@@ -41,7 +45,7 @@
 		378D1A4127C482C200BCE00B /* AddTransactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTransactionView.swift; sourceTree = "<group>"; };
 		37AACAEE27C18A6400F52F69 /* Treasury.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Treasury.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		37AACAF127C18A6400F52F69 /* TreasuryApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreasuryApp.swift; sourceTree = "<group>"; };
-		37AACAF327C18A6400F52F69 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		37AACAF327C18A6400F52F69 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		37AACAF527C18A6600F52F69 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		37AACAF827C18A6600F52F69 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		37AACAFF27C2D25500F52F69 /* SubAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubAccount.swift; sourceTree = "<group>"; };
@@ -92,10 +96,13 @@
 		378D1A4027C4827700BCE00B /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				37AACAF327C18A6400F52F69 /* HomeView.swift */,
 				378D1A3727C43F0700BCE00B /* MonthView.swift */,
 				378D1A3D27C468AE00BCE00B /* SubAccountView.swift */,
 				378D1A4127C482C200BCE00B /* AddTransactionView.swift */,
 				373D351027DC81700046DAD4 /* SignInView.swift */,
+				373D351D27DCFF790046DAD4 /* SignUpView.swift */,
+				373D351F27DD01DB0046DAD4 /* IndexView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -126,7 +133,6 @@
 				378D1A3F27C4826500BCE00B /* Models */,
 				378D1A3C27C4531200BCE00B /* documents */,
 				37AACAF127C18A6400F52F69 /* TreasuryApp.swift */,
-				37AACAF327C18A6400F52F69 /* ContentView.swift */,
 				37AACAF527C18A6600F52F69 /* Assets.xcassets */,
 				37AACAF727C18A6600F52F69 /* Preview Content */,
 				378D1A3527C374E300BCE00B /* BudgetLoader.swift */,
@@ -227,10 +233,12 @@
 				378D1A3E27C468AE00BCE00B /* SubAccountView.swift in Sources */,
 				378D1A3627C374E300BCE00B /* BudgetLoader.swift in Sources */,
 				373D351C27DC853E0046DAD4 /* ViewRouter.swift in Sources */,
-				37AACAF427C18A6400F52F69 /* ContentView.swift in Sources */,
+				37AACAF427C18A6400F52F69 /* HomeView.swift in Sources */,
 				37AACB0427C2D3B100F52F69 /* BudgetModel.swift in Sources */,
 				373D350E27DC7C9C0046DAD4 /* BudgetViewModel.swift in Sources */,
+				373D352027DD01DB0046DAD4 /* IndexView.swift in Sources */,
 				37AACB0227C2D2F000F52F69 /* Transaction.swift in Sources */,
+				373D351E27DCFF790046DAD4 /* SignUpView.swift in Sources */,
 				37AACAF227C18A6400F52F69 /* TreasuryApp.swift in Sources */,
 				378D1A3827C43F0700BCE00B /* MonthView.swift in Sources */,
 				373D351127DC81700046DAD4 /* SignInView.swift in Sources */,
