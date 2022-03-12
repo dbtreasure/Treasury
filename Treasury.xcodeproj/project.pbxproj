@@ -12,7 +12,6 @@
 		373D351427DC82720046DAD4 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 373D351327DC82720046DAD4 /* FirebaseAuth */; };
 		373D351627DC82720046DAD4 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 373D351527DC82720046DAD4 /* FirebaseDatabase */; };
 		373D351827DC82720046DAD4 /* FirebaseDatabaseSwift-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = 373D351727DC82720046DAD4 /* FirebaseDatabaseSwift-Beta */; };
-		373D351A27DC82B90046DAD4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 373D351927DC82B90046DAD4 /* GoogleService-Info.plist */; };
 		373D351C27DC853E0046DAD4 /* ViewRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373D351B27DC853E0046DAD4 /* ViewRouter.swift */; };
 		373D351E27DCFF790046DAD4 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373D351D27DCFF790046DAD4 /* SignUpView.swift */; };
 		373D352027DD01DB0046DAD4 /* IndexView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373D351F27DD01DB0046DAD4 /* IndexView.swift */; };
@@ -34,7 +33,6 @@
 		373D350D27DC7C9C0046DAD4 /* BudgetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetViewModel.swift; sourceTree = "<group>"; };
 		373D350F27DC80720046DAD4 /* Treasury.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Treasury.entitlements; sourceTree = "<group>"; };
 		373D351027DC81700046DAD4 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
-		373D351927DC82B90046DAD4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		373D351B27DC853E0046DAD4 /* ViewRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewRouter.swift; sourceTree = "<group>"; };
 		373D351D27DCFF790046DAD4 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		373D351F27DD01DB0046DAD4 /* IndexView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexView.swift; sourceTree = "<group>"; };
@@ -126,7 +124,6 @@
 		37AACAF027C18A6400F52F69 /* Treasury */ = {
 			isa = PBXGroup;
 			children = (
-				373D351927DC82B90046DAD4 /* GoogleService-Info.plist */,
 				373D350F27DC80720046DAD4 /* Treasury.entitlements */,
 				373D350C27DC7C4B0046DAD4 /* ViewModels */,
 				378D1A4027C4827700BCE00B /* Views */,
@@ -216,7 +213,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				37AACAF927C18A6600F52F69 /* Preview Assets.xcassets in Resources */,
-				373D351A27DC82B90046DAD4 /* GoogleService-Info.plist in Resources */,
 				37AACAF627C18A6600F52F69 /* Assets.xcassets in Resources */,
 				378D1A3A27C4512900BCE00B /* budget.plist in Resources */,
 			);

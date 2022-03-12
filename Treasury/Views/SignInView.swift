@@ -19,6 +19,7 @@ struct SignInView: View {
     var body: some View {
         VStack(spacing: 15) {
             Spacer()
+            LogoView()
             HStack {
                 Text("Treasury")
                     .bold()
@@ -50,6 +51,16 @@ struct SignInView: View {
                 .opacity(0.9)
         }
             .padding()
+    }
+}
+
+struct LogoView: View {
+    var body: some View {
+        Image("Logo")
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .frame(width: 150, height: 150)
+            .cornerRadius(20)
     }
 }
 
