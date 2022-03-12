@@ -15,6 +15,7 @@
 		373D351C27DC853E0046DAD4 /* ViewRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373D351B27DC853E0046DAD4 /* ViewRouter.swift */; };
 		373D351E27DCFF790046DAD4 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373D351D27DCFF790046DAD4 /* SignUpView.swift */; };
 		373D352027DD01DB0046DAD4 /* IndexView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373D351F27DD01DB0046DAD4 /* IndexView.swift */; };
+		373D352227DD0C4A0046DAD4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 373D352127DD0C4A0046DAD4 /* GoogleService-Info.plist */; };
 		378D1A3627C374E300BCE00B /* BudgetLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378D1A3527C374E300BCE00B /* BudgetLoader.swift */; };
 		378D1A3827C43F0700BCE00B /* MonthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378D1A3727C43F0700BCE00B /* MonthView.swift */; };
 		378D1A3A27C4512900BCE00B /* budget.plist in Resources */ = {isa = PBXBuildFile; fileRef = 378D1A3927C4512900BCE00B /* budget.plist */; };
@@ -36,6 +37,7 @@
 		373D351B27DC853E0046DAD4 /* ViewRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewRouter.swift; sourceTree = "<group>"; };
 		373D351D27DCFF790046DAD4 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		373D351F27DD01DB0046DAD4 /* IndexView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexView.swift; sourceTree = "<group>"; };
+		373D352127DD0C4A0046DAD4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		378D1A3527C374E300BCE00B /* BudgetLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetLoader.swift; sourceTree = "<group>"; };
 		378D1A3727C43F0700BCE00B /* MonthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthView.swift; sourceTree = "<group>"; };
 		378D1A3927C4512900BCE00B /* budget.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = budget.plist; sourceTree = "<group>"; };
@@ -124,6 +126,7 @@
 		37AACAF027C18A6400F52F69 /* Treasury */ = {
 			isa = PBXGroup;
 			children = (
+				373D352127DD0C4A0046DAD4 /* GoogleService-Info.plist */,
 				373D350F27DC80720046DAD4 /* Treasury.entitlements */,
 				373D350C27DC7C4B0046DAD4 /* ViewModels */,
 				378D1A4027C4827700BCE00B /* Views */,
@@ -213,6 +216,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				37AACAF927C18A6600F52F69 /* Preview Assets.xcassets in Resources */,
+				373D352227DD0C4A0046DAD4 /* GoogleService-Info.plist in Resources */,
 				37AACAF627C18A6600F52F69 /* Assets.xcassets in Resources */,
 				378D1A3A27C4512900BCE00B /* budget.plist in Resources */,
 			);
