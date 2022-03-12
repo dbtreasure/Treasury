@@ -36,7 +36,7 @@ struct AddTransactionView: View {
                     .font(.largeTitle)
                 Spacer()
             }
-            VStack{
+            VStack(spacing: 20){
                 HStack{
                     Text("$").font(.custom("something", size: 90))
                     TextField("", value: $total, format: .number)
@@ -50,7 +50,7 @@ struct AddTransactionView: View {
                     .padding([.leading, .trailing])
                     .foregroundColor(.black)
                     .font(.title)
-                    .lineSpacing(20)
+                    
                 DatePicker(
                         "Date",
                         selection: $date,

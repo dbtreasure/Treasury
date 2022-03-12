@@ -89,8 +89,7 @@ struct MonthView: View {
         .padding([.leading, .trailing])
         .navigationBarTitle("March")
         .navigationBarItems(trailing:
-                Text("Add Category")
-                    .bold()
+                                Image(systemName: "folder.badge.plus")
         ).foregroundColor(.black)
     }
 }

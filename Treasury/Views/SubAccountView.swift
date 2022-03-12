@@ -88,12 +88,13 @@ struct SubAccountView: View {
         .navigationBarTitle(account.name)
         .navigationBarItems(trailing:
                                 NavigationLink(destination: AddTransactionView(account: account)) {
-                Text("Add Expense")
-                    .bold()
+                Image(systemName: "doc.badge.plus")
             }
             
         ).foregroundColor(.black)
-       
+            .onAppear(perform: {
+                budget = APIBudgetLoader.load()
+            })
     }
 }
 

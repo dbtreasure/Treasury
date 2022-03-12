@@ -10,7 +10,9 @@ import SwiftUI
 import Firebase
 
 struct SignInView: View {
-    @State var signUpProcessing = false
+    @State var signInProcessing = false
+    @State var signInErrorMessage = ""
+    
     @EnvironmentObject var viewRouter: ViewRouter
     
     @State var email = ""
@@ -28,7 +30,7 @@ struct SignInView: View {
             Spacer()
             SignInCredentialFields(email: $email, password: $password)
             Button(action: {
-                
+                signInUser(userEmail: email, userPassword: password)
             }) {
                 Text("Log In")
                     .bold()
@@ -36,6 +38,13 @@ struct SignInView: View {
                     .background(.thinMaterial)
                     .cornerRadius(10)
                     .foregroundStyle(.black)
+            }.disabled(!signInProcessing && !email.isEmpty && !password.isEmpty ? false : true)
+            if signInProcessing {
+                ProgressView()
+            }
+            if !signInErrorMessage.isEmpty {
+                Text("Failed creating account: \(signInErrorMessage)")
+                    .foregroundColor(.red)
             }
             Spacer()
             HStack {
@@ -51,6 +60,28 @@ struct SignInView: View {
                 .opacity(0.9)
         }
             .padding()
+    }
+    
+    func signInUser(userEmail: String, userPassword: String) {
+        signInProcessing = true
+        Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
+            guard error == nil else {
+                signInProcessing = false
+                signInErrorMessage = error!.localizedDescription
+                return
+            }
+            switch authResult {
+            case .none:
+                print("Could not sign in user.")
+                signInProcessing = false
+            case .some(_):
+                print("User signed in")
+                signInProcessing = false
+                withAnimation {
+                    viewRouter.currentPage = .homePage
+                }
+            }
+        }
     }
 }
 
