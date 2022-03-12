@@ -24,6 +24,16 @@ class Budget: Codable {
         return self.accounts
     }
     
+    func getSubAccountByName(name: String) -> SubAccount? {
+        let instanceOfAccount = self.accounts.first(where: {$0.name == name})
+        return instanceOfAccount
+    }
+    
+    func getSubAccountById(id: SubAccount.ID) -> SubAccount? {
+        let instanceOfAccount = self.accounts.first(where: {$0.id == id})
+        return instanceOfAccount
+    }
+    
     func addAccount(account: SubAccount) {
         self.accounts.append(account)
     }

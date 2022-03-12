@@ -11,21 +11,6 @@ struct MonthView: View {
     @State private var budget = APIBudgetLoader.load()
     var body: some View {
         VStack {
-            HStack(
-                alignment: .center, spacing: 10
-            ) {
-                Text("February")
-                    .fontWeight(.bold)
-                    .multilineTextAlignment(.leading)
-                    .font(.largeTitle)
-                Spacer()
-                NavigationLink(destination: MonthView()) {
-                    Image(systemName: "plus")
-                        .foregroundColor(Color.black)
-                        .imageScale(.large)
-                        .font(Font.title3.bold())
-                }
-            }
             ScrollView {
                 VStack(alignment: .center, spacing: 10) {
                     ForEach(budget.getAccounts(), id: \.id) { account in
@@ -33,7 +18,7 @@ struct MonthView: View {
                             HStack(alignment: .center, spacing: 10) {
                                 Text(account.name)
                                     .font(.title3)
-                                    .foregroundColor(.black)
+                                    .foregroundStyle(.black)
                                 Spacer()
                                 (
                                     account.getRemainingFunds() < 0 ?
@@ -101,11 +86,21 @@ struct MonthView: View {
                 }
             }
         }
-        
         .padding(.leading)
         .padding(.trailing)
-        .navigationBarTitle("")
-        .navigationBarHidden(true)
+        .navigationBarTitle("March")
+        .navigationBarItems(trailing:
+                Text("Add Category")
+                    .bold()
+        ).foregroundColor(.black)
     }
-
+}
+struct MonthView_Previews: PreviewProvider {
+    static var previews: some View {
+        VStack {
+            NavigationView {
+                MonthView()
+            }.accentColor(.black)
+        }
+    }
 }

@@ -13,9 +13,8 @@ struct ContentView: View {
         VStack {
             NavigationView {
                 MonthView()
-                    .navigationBarTitle("")
-                    .navigationBarHidden(true)
             }.accentColor(.black)
+                
         }
     }
 }
@@ -23,5 +22,6 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+            .colorScheme(.light)
     }
 }

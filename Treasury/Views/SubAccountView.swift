@@ -15,6 +15,7 @@ struct SubAccountView: View {
     init(account: SubAccount) {
         self.account = account
     }
+    
     var body: some View {
         VStack {
             Spacer()
@@ -88,11 +89,22 @@ struct SubAccountView: View {
         .navigationBarTitle(account.name)
         .navigationBarItems(trailing:
                                 NavigationLink(destination: AddTransactionView(account: account)) {
-            Image(systemName: "plus")
-                .foregroundColor(Color.black)
-                .imageScale(.large)
-                .font(Font.title3.bold())
+                Text("Add Expense")
+                    .bold()
             }
-        )
+            
+        ).foregroundColor(.black)
+       
+    }
+}
+
+struct SubAccountView_Previews: PreviewProvider {
+    static var previews: some View {
+        VStack {
+            NavigationView {
+                SubAccountView(account: APIBudgetLoader.load().getAccounts().randomElement()!)
+            }
+        }
+        
     }
 }

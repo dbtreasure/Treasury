@@ -48,8 +48,6 @@ struct AddTransactionView: View {
                 }
                 .foregroundColor(.black)
                 .font(.title2)
-                
-
             }
             Spacer()
         }
