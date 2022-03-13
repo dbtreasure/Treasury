@@ -19,6 +19,9 @@
 		373D352627DD0DE20046DAD4 /* _Budget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373D352527DD0DE20046DAD4 /* _Budget.swift */; };
 		373D352927DD56790046DAD4 /* EncodableExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373D352827DD56790046DAD4 /* EncodableExtensions.swift */; };
 		373D352B27DD63AB0046DAD4 /* DecodableExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373D352A27DD63AB0046DAD4 /* DecodableExtensions.swift */; };
+		373D352D27DD79620046DAD4 /* AddSubAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373D352C27DD79620046DAD4 /* AddSubAccountView.swift */; };
+		373D352F27DD7E810046DAD4 /* _SubAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373D352E27DD7E810046DAD4 /* _SubAccount.swift */; };
+		373D353127DD7FFE0046DAD4 /* SubAccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373D353027DD7FFE0046DAD4 /* SubAccountViewModel.swift */; };
 		378D1A3627C374E300BCE00B /* BudgetLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378D1A3527C374E300BCE00B /* BudgetLoader.swift */; };
 		378D1A3827C43F0700BCE00B /* MonthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378D1A3727C43F0700BCE00B /* MonthView.swift */; };
 		378D1A3A27C4512900BCE00B /* budget.plist in Resources */ = {isa = PBXBuildFile; fileRef = 378D1A3927C4512900BCE00B /* budget.plist */; };
@@ -44,6 +47,9 @@
 		373D352527DD0DE20046DAD4 /* _Budget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = _Budget.swift; sourceTree = "<group>"; };
 		373D352827DD56790046DAD4 /* EncodableExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncodableExtensions.swift; sourceTree = "<group>"; };
 		373D352A27DD63AB0046DAD4 /* DecodableExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecodableExtensions.swift; sourceTree = "<group>"; };
+		373D352C27DD79620046DAD4 /* AddSubAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSubAccountView.swift; sourceTree = "<group>"; };
+		373D352E27DD7E810046DAD4 /* _SubAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = _SubAccount.swift; sourceTree = "<group>"; };
+		373D353027DD7FFE0046DAD4 /* SubAccountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubAccountViewModel.swift; sourceTree = "<group>"; };
 		378D1A3527C374E300BCE00B /* BudgetLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetLoader.swift; sourceTree = "<group>"; };
 		378D1A3727C43F0700BCE00B /* MonthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthView.swift; sourceTree = "<group>"; };
 		378D1A3927C4512900BCE00B /* budget.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = budget.plist; sourceTree = "<group>"; };
@@ -77,6 +83,7 @@
 			isa = PBXGroup;
 			children = (
 				373D350D27DC7C9C0046DAD4 /* BudgetViewModel.swift */,
+				373D353027DD7FFE0046DAD4 /* SubAccountViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -105,6 +112,7 @@
 				37AACB0327C2D3B100F52F69 /* BudgetModel.swift */,
 				37AACB0127C2D2F000F52F69 /* Transaction.swift */,
 				373D352527DD0DE20046DAD4 /* _Budget.swift */,
+				373D352E27DD7E810046DAD4 /* _SubAccount.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -119,6 +127,7 @@
 				373D351027DC81700046DAD4 /* SignInView.swift */,
 				373D351D27DCFF790046DAD4 /* SignUpView.swift */,
 				373D351F27DD01DB0046DAD4 /* IndexView.swift */,
+				373D352C27DD79620046DAD4 /* AddSubAccountView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -251,10 +260,12 @@
 				378D1A3E27C468AE00BCE00B /* SubAccountView.swift in Sources */,
 				378D1A3627C374E300BCE00B /* BudgetLoader.swift in Sources */,
 				373D351C27DC853E0046DAD4 /* ViewRouter.swift in Sources */,
+				373D352D27DD79620046DAD4 /* AddSubAccountView.swift in Sources */,
 				373D352B27DD63AB0046DAD4 /* DecodableExtensions.swift in Sources */,
 				37AACAF427C18A6400F52F69 /* HomeView.swift in Sources */,
 				373D352627DD0DE20046DAD4 /* _Budget.swift in Sources */,
 				37AACB0427C2D3B100F52F69 /* BudgetModel.swift in Sources */,
+				373D352F27DD7E810046DAD4 /* _SubAccount.swift in Sources */,
 				373D350E27DC7C9C0046DAD4 /* BudgetViewModel.swift in Sources */,
 				373D352027DD01DB0046DAD4 /* IndexView.swift in Sources */,
 				37AACB0227C2D2F000F52F69 /* Transaction.swift in Sources */,
@@ -263,6 +274,7 @@
 				378D1A3827C43F0700BCE00B /* MonthView.swift in Sources */,
 				373D351127DC81700046DAD4 /* SignInView.swift in Sources */,
 				378D1A4227C482C200BCE00B /* AddTransactionView.swift in Sources */,
+				373D353127DD7FFE0046DAD4 /* SubAccountViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

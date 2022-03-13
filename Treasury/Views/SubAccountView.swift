@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct SubAccountView: View {
-    @State private var budget = APIBudgetLoader.load()
+    @EnvironmentObject private var subAccountViewModel: SubAccountViewModel
     
-    let account: SubAccount
+    let account: _SubAccount
     
-    init(account: SubAccount) {
+    init(account: _SubAccount) {
         self.account = account
     }
     
@@ -20,16 +20,16 @@ struct SubAccountView: View {
         VStack {
             Spacer()
             ScrollView {
-                VStack(alignment: .center, spacing: 10) {
-                    ForEach(account.transactions, id: \.id) { transaction in
-                        HStack(alignment: .center, spacing: 10) {
-                            Text(transaction.description)
-                                .font(.title3)
-                            Spacer()
-                            Text("$\(transaction.total)")
-                        }
-                    }
-                }
+//                VStack(alignment: .center, spacing: 10) {
+//                    ForEach([account.transactions], id: \.id) { transaction in
+//                        HStack(alignment: .center, spacing: 10) {
+//                            Text(transaction.description)
+//                                .font(.title3)
+//                            Spacer()
+//                            Text("$\(transaction.total)")
+//                        }
+//                    }
+//                }
             }
             .frame(
               minWidth: 0,
@@ -57,8 +57,8 @@ struct SubAccountView: View {
                         .font(.title2)
                         .fontWeight(.semibold)
                     Spacer()
-                    (account.sumOfTransactions() > 0 ? Text("-$\(account.sumOfTransactions())") :
-                        Text("$\(account.sumOfTransactions())"))
+                    (subAccountViewModel.sumOfTransactions(id: account.id) > 0 ? Text("-$\(subAccountViewModel.sumOfTransactions(id: account.id))") :
+                        Text("$\(subAccountViewModel.sumOfTransactions(id: account.id))"))
                         .font(.title2)
                         .fontWeight(.semibold)
                 }
@@ -72,12 +72,12 @@ struct SubAccountView: View {
                         .fontWeight(.semibold)
                     Spacer()
                     (
-                        account.getRemainingFunds() < 0 ?
-                        Text("$\(account.getRemainingFunds())")
+                        subAccountViewModel.getRemainingFunds(id: account.id) < 0 ?
+                        Text("$\(subAccountViewModel.getRemainingFunds(id: account.id))")
                             .font(.title2)
                             .fontWeight(.semibold)
                             .foregroundColor(.red) :
-                        Text("$\(account.getRemainingFunds())")
+                        Text("$\(subAccountViewModel.getRemainingFunds(id: account.id))")
                             .font(.title2)
                             .fontWeight(.semibold)
                     )
@@ -85,21 +85,18 @@ struct SubAccountView: View {
             }
         }
         .padding([.leading, .trailing])
-        .navigationBarTitle(account.name)
+        .navigationBarTitle(account.title)
         .navigationBarItems(trailing:
-                                NavigationLink(destination: AddTransactionView(account: account)) {
+                                NavigationLink(destination: AddTransactionView(account: _SubAccount(id: "1234", budgetId: "456", ownerId: "abc", title: "Groceries", budget: 100))) {
                 Image(systemName: "doc.badge.plus")
             }
             
         ).foregroundColor(.black)
-            .onAppear(perform: {
-                budget = APIBudgetLoader.load()
-            })
     }
 }
 
 struct SubAccountView_Previews: PreviewProvider {
     static var previews: some View {
-        SubAccountView(account: APIBudgetLoader.load().getAccounts().randomElement()!)
+        SubAccountView(account: _SubAccount(id: "1234", budgetId: "456", ownerId: "abc", title: "Groceries", budget: 100))
     }
 }

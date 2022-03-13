@@ -10,8 +10,6 @@ import Firebase
 
 @main
 struct TreasuryApp: App {
-    @StateObject var viewRouter = ViewRouter()
-    @StateObject var budgetViewModel = BudgetViewModel()
     
     init() {
         FirebaseApp.configure()
@@ -21,8 +19,9 @@ struct TreasuryApp: App {
     var body: some Scene {
         WindowGroup {
             IndexView()
-                .environmentObject(viewRouter)
-                .environmentObject(budgetViewModel)
+                .environmentObject(ViewRouter())
+                .environmentObject(BudgetViewModel())
+                .environmentObject(SubAccountViewModel())
             
         }
     }

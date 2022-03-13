@@ -6,25 +6,28 @@
 //
 
 import SwiftUI
+import Firebase
 
 struct MonthView: View {
-    @State private var budget = APIBudgetLoader.load()
+    @EnvironmentObject private var budgetViewModel: BudgetViewModel
+    @EnvironmentObject private var subAccountViewModel: SubAccountViewModel
+    
     var body: some View {
         VStack {
             ScrollView {
                 VStack(alignment: .center, spacing: 10) {
-                    ForEach(budget.getAccounts(), id: \.id) { account in
+                    ForEach(subAccountViewModel.subAccounts, id: \.id) { account in
                         NavigationLink(destination: SubAccountView(account: account)) {
                             HStack(alignment: .center, spacing: 10) {
-                                Text(account.name)
+                                Text(account.title)
                                     .font(.title3)
                                     .foregroundStyle(.black)
                                 Spacer()
                                 (
-                                    account.getRemainingFunds() < 0 ?
-                                    Text("$\(account.getRemainingFunds())")
+                                    subAccountViewModel.getRemainingFunds(id: account.id) < 0 ?
+                                    Text("$\(subAccountViewModel.getRemainingFunds(id: account.id))")
                                         .foregroundColor(.red) :
-                                    Text("$\(account.getRemainingFunds())")
+                                    Text("$\(subAccountViewModel.getRemainingFunds(id: account.id))")
                                         .foregroundColor(.black)
                                 )
                             }
@@ -40,61 +43,75 @@ struct MonthView: View {
                   maxHeight: .infinity,
                   alignment: .topLeading
                 )
-            VStack(alignment: .center, spacing: 6) {
-                HStack(
-                    alignment: .center, spacing: 10
-                ) {
-                    Text("Total budget")
-                        .font(.title2)
-                        .fontWeight(.semibold)
-                    Spacer()
-                    Text("$\(budget.getTotalBudget())")
-                        .font(.title2)
-                        .fontWeight(.semibold)
-                }
-                HStack(
-                    alignment: .center, spacing: 10
-                ) {
-                    Text("Total expenses")
-                        .font(.title2)
-                        .fontWeight(.semibold)
-                    Spacer()
-                    (budget.getTotalTransactions() > 0 ? Text("-$\(budget.getTotalTransactions())") :
-                        Text("$\(budget.getTotalTransactions())"))
-                        .font(.title2)
-                        .fontWeight(.semibold)
-                }
-                Divider()
-                    .background(.black)
-                HStack(
-                    alignment: .center, spacing: 10
-                ) {
-                    Text("Remaining")
-                        .font(.title2)
-                        .fontWeight(.semibold)
-                    Spacer()
-                    (
-                        budget.getRemainingFunds() < 0 ?
-                        Text("$\(budget.getRemainingFunds())")
-                            .font(.title2)
-                            .fontWeight(.semibold)
-                            .foregroundColor(.red) :
-                        Text("$\(budget.getRemainingFunds())")
-                            .font(.title2)
-                            .fontWeight(.semibold)
-                    )
-                }
-            }
+//            VStack(alignment: .center, spacing: 6) {
+//                HStack(
+//                    alignment: .center, spacing: 10
+//                ) {
+//                    Text("Total budget")
+//                        .font(.title2)
+//                        .fontWeight(.semibold)
+//                    Spacer()
+//                    Text("$\(budget.getTotalBudget())")
+//                        .font(.title2)
+//                        .fontWeight(.semibold)
+//                }
+//                HStack(
+//                    alignment: .center, spacing: 10
+//                ) {
+//                    Text("Total expenses")
+//                        .font(.title2)
+//                        .fontWeight(.semibold)
+//                    Spacer()
+//                    (budget.getTotalTransactions() > 0 ? Text("-$\(budget.getTotalTransactions())") :
+//                        Text("$\(budget.getTotalTransactions())"))
+//                        .font(.title2)
+//                        .fontWeight(.semibold)
+//                }
+//                Divider()
+//                    .background(.black)
+//                HStack(
+//                    alignment: .center, spacing: 10
+//                ) {
+//                    Text("Remaining")
+//                        .font(.title2)
+//                        .fontWeight(.semibold)
+//                    Spacer()
+//                    (
+//                        budget.getRemainingFunds() < 0 ?
+//                        Text("$\(budget.getRemainingFunds())")
+//                            .font(.title2)
+//                            .fontWeight(.semibold)
+//                            .foregroundColor(.red) :
+//                        Text("$\(budget.getRemainingFunds())")
+//                            .font(.title2)
+//                            .fontWeight(.semibold)
+//                    )
+//                }
+//            }
         }
         .padding([.leading, .trailing])
         .navigationBarTitle("March")
-        .navigationBarItems(trailing:
-                                Image(systemName: "folder.badge.plus")
+        .navigationBarItems(trailing: NavigationLink(destination: AddSubAccountView()) {
+            Image(systemName: "folder.badge.plus")
+        }
+                                
         ).foregroundColor(.black)
     }
 }
 struct MonthView_Previews: PreviewProvider {
+    @EnvironmentObject private var budgetViewModel: BudgetViewModel
+    @EnvironmentObject private var subAccountViewModel: SubAccountViewModel
+    
+    init() {
+        FirebaseApp.configure()
+        Database.database().isPersistenceEnabled = true
+        budgetViewModel.initListener()
+        subAccountViewModel.initListener()
+    }
     static var previews: some View {
         MonthView()
+            .environmentObject(BudgetViewModel())
+            .environmentObject(SubAccountViewModel())
+            
     }
 }

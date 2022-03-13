@@ -23,7 +23,6 @@ class BudgetViewModel: ObservableObject {
     
     func initListener() {
         if let userID = Auth.auth().currentUser?.uid {
-            print("DANLOG userID", userID)
             
             ref.child(dbPath).child(userID).observeSingleEvent(of: .value) { snapshot in
                 guard let children = snapshot.children.allObjects as? [DataSnapshot] else {
@@ -39,14 +38,14 @@ class BudgetViewModel: ObservableObject {
     
     func addBudget() {
         if let userID = Auth.auth().currentUser?.uid {
-            guard let autoId = ref.child(dbPath).childByAutoId().key else {
+            guard let autoId = ref.child(dbPath).child(userID).childByAutoId().key else {
                 return
             }
             let budget = _Budget(id: autoId, updatedAt: Date.now, ownerId: userID)
             
             do {
                 let budgetAsDictionary = try budget.asDictionary()
-                try ref.child("\(dbPath)/\(userID)/\(budget.id)").setValue(budgetAsDictionary)
+                ref.child("\(dbPath)/\(userID)/\(budget.id)").setValue(budgetAsDictionary)
                 initListener()
             } catch  {
                 return

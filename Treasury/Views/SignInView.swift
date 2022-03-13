@@ -79,7 +79,6 @@ struct SignInView: View {
                 print("DANLOG User signed in")
                 signInProcessing = false
                 withAnimation {
-                    print("DANLOG animating away")
                     budgetViewModel.initListener()
                     viewRouter.currentPage = .homePage
                 }

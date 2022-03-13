@@ -18,7 +18,6 @@ struct IndexView: View {
             SignInView()
         case .homePage:
             HomeView()
-                .onAppear(perform: {print("DANLOG Indexview changing to HOMEVIEW")})
         }
     }
 }
