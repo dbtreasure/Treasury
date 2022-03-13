@@ -11,6 +11,7 @@ import Firebase
 struct MonthView: View {
     @EnvironmentObject private var budgetViewModel: BudgetViewModel
     @EnvironmentObject private var subAccountViewModel: SubAccountViewModel
+    @EnvironmentObject private var transactionViewModel: TransactionViewModel
     
     var body: some View {
         VStack {
@@ -24,10 +25,10 @@ struct MonthView: View {
                                     .foregroundStyle(.black)
                                 Spacer()
                                 (
-                                    subAccountViewModel.getRemainingFunds(id: account.id) < 0 ?
-                                    Text("$\(subAccountViewModel.getRemainingFunds(id: account.id))")
+                                    transactionViewModel.getRemainingFundsForSubAccount(subAccountId: account.id, budget: account.budget) < 0 ?
+                                    Text("$\(transactionViewModel.getRemainingFundsForSubAccount(subAccountId: account.id, budget: account.budget))")
                                         .foregroundColor(.red) :
-                                    Text("$\(subAccountViewModel.getRemainingFunds(id: account.id))")
+                                    Text("$\(transactionViewModel.getRemainingFundsForSubAccount(subAccountId: account.id, budget: account.budget))")
                                         .foregroundColor(.black)
                                 )
                             }
@@ -43,51 +44,51 @@ struct MonthView: View {
                   maxHeight: .infinity,
                   alignment: .topLeading
                 )
-//            VStack(alignment: .center, spacing: 6) {
-//                HStack(
-//                    alignment: .center, spacing: 10
-//                ) {
-//                    Text("Total budget")
-//                        .font(.title2)
-//                        .fontWeight(.semibold)
-//                    Spacer()
-//                    Text("$\(budget.getTotalBudget())")
-//                        .font(.title2)
-//                        .fontWeight(.semibold)
-//                }
-//                HStack(
-//                    alignment: .center, spacing: 10
-//                ) {
-//                    Text("Total expenses")
-//                        .font(.title2)
-//                        .fontWeight(.semibold)
-//                    Spacer()
-//                    (budget.getTotalTransactions() > 0 ? Text("-$\(budget.getTotalTransactions())") :
-//                        Text("$\(budget.getTotalTransactions())"))
-//                        .font(.title2)
-//                        .fontWeight(.semibold)
-//                }
-//                Divider()
-//                    .background(.black)
-//                HStack(
-//                    alignment: .center, spacing: 10
-//                ) {
-//                    Text("Remaining")
-//                        .font(.title2)
-//                        .fontWeight(.semibold)
-//                    Spacer()
-//                    (
-//                        budget.getRemainingFunds() < 0 ?
-//                        Text("$\(budget.getRemainingFunds())")
-//                            .font(.title2)
-//                            .fontWeight(.semibold)
-//                            .foregroundColor(.red) :
-//                        Text("$\(budget.getRemainingFunds())")
-//                            .font(.title2)
-//                            .fontWeight(.semibold)
-//                    )
-//                }
-//            }
+            VStack(alignment: .center, spacing: 6) {
+                HStack(
+                    alignment: .center, spacing: 10
+                ) {
+                    Text("Total budget")
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                    Spacer()
+                    Text("$\(subAccountViewModel.getBudgetForAllSubAccounts())")
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                }
+                HStack(
+                    alignment: .center, spacing: 10
+                ) {
+                    Text("Total expenses")
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                    Spacer()
+                    (transactionViewModel.getTransactionsSumForBudget() > 0 ? Text("-$\(transactionViewModel.getTransactionsSumForBudget())") :
+                        Text("$\(transactionViewModel.getTransactionsSumForBudget())"))
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                }
+                Divider()
+                    .background(.black)
+                HStack(
+                    alignment: .center, spacing: 10
+                ) {
+                    Text("Remaining")
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                    Spacer()
+                    (
+                        transactionViewModel.getRemainingFundsForBudget(subAccountViewModel.getBudgetForAllSubAccounts()) < 0 ?
+                        Text("$\(transactionViewModel.getRemainingFundsForBudget(subAccountViewModel.getBudgetForAllSubAccounts()))")
+                            .font(.title2)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.red) :
+                            Text("$\(transactionViewModel.getRemainingFundsForBudget(subAccountViewModel.getBudgetForAllSubAccounts()))")
+                            .font(.title2)
+                            .fontWeight(.semibold)
+                    )
+                }
+            }
         }
         .padding([.leading, .trailing])
         .navigationBarTitle("March")

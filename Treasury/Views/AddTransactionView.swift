@@ -17,8 +17,8 @@ struct AddTransactionView: View {
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
-    let account: _SubAccount
-    init(account: _SubAccount) {
+    let account: SubAccount
+    init(account: SubAccount) {
         self.account = account
     }
     
@@ -78,6 +78,6 @@ struct AddTransactionView: View {
 
 struct AddTransactionView_Previews: PreviewProvider {
     static var previews: some View {
-        AddTransactionView(account: _SubAccount(id: "1234", budgetId: "456", ownerId: "abc", title: "Groceries", budget: 100))
+        AddTransactionView(account: SubAccount(id: "1234", budgetId: "456", ownerId: "abc", title: "Groceries", budget: 100))
     }
 }

@@ -12,7 +12,7 @@ import FirebaseDatabase
 import FirebaseDatabaseSwift
 
 class BudgetViewModel: ObservableObject {
-    @Published var budgets = [_Budget]()
+    @Published var budgets = [Budget]()
     private let ref = Database.database().reference()
     private let dbPath = "budgets"
     
@@ -30,7 +30,7 @@ class BudgetViewModel: ObservableObject {
                 }
                 
                 self.budgets = children.compactMap { snapshot in
-                    return try? snapshot.data(as: _Budget.self)
+                    return try? snapshot.data(as: Budget.self)
                 }
             }
         }
@@ -41,7 +41,7 @@ class BudgetViewModel: ObservableObject {
             guard let autoId = ref.child(dbPath).child(userID).childByAutoId().key else {
                 return
             }
-            let budget = _Budget(id: autoId, updatedAt: Date.now, ownerId: userID)
+            let budget = Budget(id: autoId, updatedAt: Date.now, ownerId: userID)
             
             do {
                 let budgetAsDictionary = try budget.asDictionary()

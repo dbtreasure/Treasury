@@ -12,7 +12,7 @@ import FirebaseDatabase
 import FirebaseDatabaseSwift
 
 class SubAccountViewModel: ObservableObject {
-    @Published var subAccounts = [_SubAccount]()
+    @Published var subAccounts = [SubAccount]()
     
     private let ref = Database.database().reference()
     private let dbPath = "subAccounts"
@@ -27,7 +27,7 @@ class SubAccountViewModel: ObservableObject {
                 guard let children = snapshot.children.allObjects as? [DataSnapshot] else { return }
                 
                 self.subAccounts = children.compactMap { snapshot in
-                    return try? snapshot.data(as: _SubAccount.self)
+                    return try? snapshot.data(as: SubAccount.self)
                 }
             }
         }
@@ -36,7 +36,7 @@ class SubAccountViewModel: ObservableObject {
     func addSubAccount(title: String, budgetId: String, budget: Int) {
         if let userID = Auth.auth().currentUser?.uid {
             guard let autoId = ref.child(dbPath).child(userID).childByAutoId().key else { return }
-            let subAccount = _SubAccount(id: autoId, updatedAt: Date.now, budgetId: budgetId, ownerId: userID, title: title, budget: budget)
+            let subAccount = SubAccount(id: autoId, updatedAt: Date.now, budgetId: budgetId, ownerId: userID, title: title, budget: budget)
             do {
                 let subAccountAsDictionary = try subAccount.asDictionary()
                 ref.child("\(dbPath)/\(userID)/\(subAccount.id)").setValue(subAccountAsDictionary)
@@ -47,20 +47,7 @@ class SubAccountViewModel: ObservableObject {
         }
     }
     
-    func sumOfTransactions(id: String) -> Int {
-        return 30
-    }
-    
-    func getRemainingFunds(id: String) -> Int {
-        if let acct = self.subAccounts.first(where: {$0.id == id}) {
-            return acct.budget - sumOfTransactions(id: id)
-        }
-        return 0
-    }
-    
-    func addTransaction(transaction: Transaction) {
-        //
-    }
-    
-    
+    func getBudgetForAllSubAccounts() -> Int {
+        return self.subAccounts.reduce(0, {$0 + $1.budget})
+    }   
 }

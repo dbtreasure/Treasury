@@ -12,7 +12,7 @@ import FirebaseDatabase
 import FirebaseDatabaseSwift
 
 class TransactionViewModel: ObservableObject {
-    @Published var transactions = [_Transaction]()
+    @Published var transactions = [Transaction]()
     private let ref = Database.database().reference()
     private let dbPath = "transactions"
     
@@ -26,7 +26,7 @@ class TransactionViewModel: ObservableObject {
                 guard let children = snapshot.children.allObjects as? [DataSnapshot] else { return }
                 
                 self.transactions = children.compactMap { snapshot in
-                    return try? snapshot.data(as: _Transaction.self)
+                    return try? snapshot.data(as: Transaction.self)
                 }
             }
         }
@@ -35,7 +35,7 @@ class TransactionViewModel: ObservableObject {
     func addTransaction(description: String, budgetId: String, total: Int, subAccountId: String, date: Date) {
         if let userID = Auth.auth().currentUser?.uid {
             guard let autoId = ref.child(dbPath).child(userID).childByAutoId().key else { return }
-            let transaction = _Transaction(id: autoId, updatedAt: Date.now, budgetId: budgetId, ownerId: userID, subAccountId: subAccountId, description: description, total: total, transactionDate: date)
+            let transaction = Transaction(id: autoId, updatedAt: Date.now, budgetId: budgetId, ownerId: userID, subAccountId: subAccountId, description: description, total: total, transactionDate: date)
             do {
                 let transactionAsDictionary = try transaction.asDictionary()
                 ref.child("\(dbPath)/\(userID)/\(transaction.id)").setValue(transactionAsDictionary)
@@ -46,7 +46,7 @@ class TransactionViewModel: ObservableObject {
         }
     }
     
-    func getTransactionsForSubAccount(subAccountId: String) -> [_Transaction] {
+    func getTransactionsForSubAccount(subAccountId: String) -> [Transaction] {
         return self.transactions.filter({$0.subAccountId == subAccountId})
     }
     
@@ -57,5 +57,13 @@ class TransactionViewModel: ObservableObject {
     
     func getRemainingFundsForSubAccount(subAccountId: String, budget: Int) -> Int {
         return budget - getTransactionSumForSubAccount(subAccountId: subAccountId)
+    }
+    
+    func getTransactionsSumForBudget() -> Int {
+        return self.transactions.reduce(0, {$0 + $1.total})
+    }
+    
+    func getRemainingFundsForBudget(_ budgetForAllSubAccounts: Int) -> Int {
+        return budgetForAllSubAccounts - getTransactionsSumForBudget()
     }
 }

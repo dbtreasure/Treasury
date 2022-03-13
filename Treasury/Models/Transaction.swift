@@ -1,24 +1,20 @@
 //
-//  Transaction.swift
+//  _Transaction.swift
 //  Treasury
 //
-//  Created by Daniel Treasure on 2/20/22.
+//  Created by Daniel Treasure on 3/12/22.
 //
 
 import Foundation
+import FirebaseDatabaseSwift
 
-class Transaction: Identifiable, Codable {
-    var date: Date
-    var subAccount: SubAccount
-    var total: Int
+struct Transaction: Identifiable, Codable {
+    var id: String
+    @ServerTimestamp var updatedAt = Date()
+    var budgetId: String
+    var ownerId: String
+    var subAccountId: String
     var description: String
-    var id: UUID
-    
-    init(date: Date, subAccount: SubAccount, total: Int, description: String) {
-        self.date = date
-        self.subAccount = subAccount
-        self.total = total
-        self.description = description
-        self.id = UUID()
-    }
+    var total: Int
+    @ServerTimestamp var transactionDate = Date()
 }

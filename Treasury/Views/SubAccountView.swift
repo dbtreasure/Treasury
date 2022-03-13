@@ -11,9 +11,9 @@ struct SubAccountView: View {
     @EnvironmentObject private var subAccountViewModel: SubAccountViewModel
     @EnvironmentObject private var transactionViewModel: TransactionViewModel
     
-    let account: _SubAccount
+    let account: SubAccount
     
-    init(account: _SubAccount) {
+    init(account: SubAccount) {
         self.account = account
     }
     
@@ -97,6 +97,6 @@ struct SubAccountView: View {
 
 struct SubAccountView_Previews: PreviewProvider {
     static var previews: some View {
-        SubAccountView(account: _SubAccount(id: "1234", budgetId: "456", ownerId: "abc", title: "Groceries", budget: 100))
+        SubAccountView(account: SubAccount(id: "1234", budgetId: "456", ownerId: "abc", title: "Groceries", budget: 100))
     }
 }
