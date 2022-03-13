@@ -13,6 +13,7 @@ import FirebaseDatabaseSwift
 
 class SubAccountViewModel: ObservableObject {
     @Published var subAccounts = [_SubAccount]()
+    
     private let ref = Database.database().reference()
     private let dbPath = "subAccounts"
     

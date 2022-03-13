@@ -22,6 +22,7 @@ struct TreasuryApp: App {
                 .environmentObject(ViewRouter())
                 .environmentObject(BudgetViewModel())
                 .environmentObject(SubAccountViewModel())
+                .environmentObject(TransactionViewModel())
             
         }
     }

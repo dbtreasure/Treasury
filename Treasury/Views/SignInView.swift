@@ -15,6 +15,7 @@ struct SignInView: View {
     
     @EnvironmentObject var viewRouter: ViewRouter
     @EnvironmentObject var budgetViewModel: BudgetViewModel
+    @EnvironmentObject var subAccountViewModel: SubAccountViewModel
     
     @State var email = "dbtreasure@gmail.com"
     @State var password = "yoyoman"
@@ -80,6 +81,7 @@ struct SignInView: View {
                 signInProcessing = false
                 withAnimation {
                     budgetViewModel.initListener()
+                    subAccountViewModel.initListener()
                     viewRouter.currentPage = .homePage
                 }
             }

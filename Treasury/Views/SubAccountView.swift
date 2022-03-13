@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SubAccountView: View {
     @EnvironmentObject private var subAccountViewModel: SubAccountViewModel
+    @EnvironmentObject private var transactionViewModel: TransactionViewModel
     
     let account: _SubAccount
     
@@ -20,16 +21,16 @@ struct SubAccountView: View {
         VStack {
             Spacer()
             ScrollView {
-//                VStack(alignment: .center, spacing: 10) {
-//                    ForEach([account.transactions], id: \.id) { transaction in
-//                        HStack(alignment: .center, spacing: 10) {
-//                            Text(transaction.description)
-//                                .font(.title3)
-//                            Spacer()
-//                            Text("$\(transaction.total)")
-//                        }
-//                    }
-//                }
+                VStack(alignment: .center, spacing: 10) {
+                    ForEach(transactionViewModel.getTransactionsForSubAccount(subAccountId: account.id), id: \.id) { transaction in
+                        HStack(alignment: .center, spacing: 10) {
+                            Text(transaction.description)
+                                .font(.title3)
+                            Spacer()
+                            Text("$\(transaction.total)")
+                        }
+                    }
+                }
             }
             .frame(
               minWidth: 0,
@@ -57,8 +58,7 @@ struct SubAccountView: View {
                         .font(.title2)
                         .fontWeight(.semibold)
                     Spacer()
-                    (subAccountViewModel.sumOfTransactions(id: account.id) > 0 ? Text("-$\(subAccountViewModel.sumOfTransactions(id: account.id))") :
-                        Text("$\(subAccountViewModel.sumOfTransactions(id: account.id))"))
+                    Text("-$\(transactionViewModel.getTransactionSumForSubAccount(subAccountId: account.id))")
                         .font(.title2)
                         .fontWeight(.semibold)
                 }
@@ -72,12 +72,12 @@ struct SubAccountView: View {
                         .fontWeight(.semibold)
                     Spacer()
                     (
-                        subAccountViewModel.getRemainingFunds(id: account.id) < 0 ?
-                        Text("$\(subAccountViewModel.getRemainingFunds(id: account.id))")
+                        transactionViewModel.getRemainingFundsForSubAccount(subAccountId: account.id, budget: account.budget) < 0 ?
+                        Text("$\(transactionViewModel.getRemainingFundsForSubAccount(subAccountId: account.id, budget: account.budget))")
                             .font(.title2)
                             .fontWeight(.semibold)
                             .foregroundColor(.red) :
-                        Text("$\(subAccountViewModel.getRemainingFunds(id: account.id))")
+                        Text("$\(transactionViewModel.getRemainingFundsForSubAccount(subAccountId: account.id, budget: account.budget))")
                             .font(.title2)
                             .fontWeight(.semibold)
                     )
@@ -87,7 +87,7 @@ struct SubAccountView: View {
         .padding([.leading, .trailing])
         .navigationBarTitle(account.title)
         .navigationBarItems(trailing:
-                                NavigationLink(destination: AddTransactionView(account: _SubAccount(id: "1234", budgetId: "456", ownerId: "abc", title: "Groceries", budget: 100))) {
+                                NavigationLink(destination: AddTransactionView(account: account)) {
                 Image(systemName: "doc.badge.plus")
             }
             

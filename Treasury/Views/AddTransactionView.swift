@@ -8,10 +8,12 @@
 import SwiftUI
 
 struct AddTransactionView: View {
+    @EnvironmentObject private var transactionViewModel: TransactionViewModel
+    @EnvironmentObject private var budgetViewModel: BudgetViewModel
+    
     @State private var description: String = ""
     @State private var date: Date = Date.now
     @State private var total: Int = 0
-    @State private var budget = APIBudgetLoader.load()
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
@@ -19,13 +21,7 @@ struct AddTransactionView: View {
     init(account: _SubAccount) {
         self.account = account
     }
-    func submit() {
-//        self.account.addTransaction(
-//            transaction: Transaction(date: date, subAccount: account, total: total, description: description)
-//        )
-        self.description = ""
-        self.total = 0
-    }
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 60) {
             HStack {
@@ -61,9 +57,7 @@ struct AddTransactionView: View {
             HStack{
                 Spacer()
                 Button("Submit") {
-//                    let transaction = Transaction(date: date, subAccount: account, total: total, description: description)
-//                    account.addTransaction(transaction: transaction)
-//                    presentationMode.wrappedValue.dismiss()
+                    submit()
                 }
                 .foregroundColor(.black)
                 .font(Font.largeTitle.weight(.bold))
@@ -72,6 +66,13 @@ struct AddTransactionView: View {
             }
             
         }
+    }
+    
+    func submit() {
+        transactionViewModel.addTransaction(description: description, budgetId: budgetViewModel.budgets.first!.id, total: total, subAccountId: account.id, date: date)
+        self.description = ""
+        self.total = 0
+        presentationMode.wrappedValue.dismiss()
     }
 }
 

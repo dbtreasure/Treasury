@@ -12,6 +12,7 @@ struct SignUpView: View {
     
     @EnvironmentObject var viewRouter: ViewRouter
     @EnvironmentObject private var budgetViewModel: BudgetViewModel
+    @EnvironmentObject private var subAccountViewModel: SubAccountViewModel
     
     @State var email = ""
     @State var password = ""
@@ -79,6 +80,8 @@ struct SignUpView: View {
                 signUpProcessing = false
             case .some(_):
                 print("User created")
+                budgetViewModel.initListener()
+                subAccountViewModel.initListener()
                 budgetViewModel.addBudget()
                 signUpProcessing = false
                 viewRouter.currentPage = .homePage

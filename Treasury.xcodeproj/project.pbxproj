@@ -22,6 +22,8 @@
 		373D352D27DD79620046DAD4 /* AddSubAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373D352C27DD79620046DAD4 /* AddSubAccountView.swift */; };
 		373D352F27DD7E810046DAD4 /* _SubAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373D352E27DD7E810046DAD4 /* _SubAccount.swift */; };
 		373D353127DD7FFE0046DAD4 /* SubAccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373D353027DD7FFE0046DAD4 /* SubAccountViewModel.swift */; };
+		373D353327DD9FCD0046DAD4 /* _Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373D353227DD9FCD0046DAD4 /* _Transaction.swift */; };
+		373D353527DDA03D0046DAD4 /* TransactionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373D353427DDA03D0046DAD4 /* TransactionViewModel.swift */; };
 		378D1A3627C374E300BCE00B /* BudgetLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378D1A3527C374E300BCE00B /* BudgetLoader.swift */; };
 		378D1A3827C43F0700BCE00B /* MonthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378D1A3727C43F0700BCE00B /* MonthView.swift */; };
 		378D1A3A27C4512900BCE00B /* budget.plist in Resources */ = {isa = PBXBuildFile; fileRef = 378D1A3927C4512900BCE00B /* budget.plist */; };
@@ -50,6 +52,8 @@
 		373D352C27DD79620046DAD4 /* AddSubAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSubAccountView.swift; sourceTree = "<group>"; };
 		373D352E27DD7E810046DAD4 /* _SubAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = _SubAccount.swift; sourceTree = "<group>"; };
 		373D353027DD7FFE0046DAD4 /* SubAccountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubAccountViewModel.swift; sourceTree = "<group>"; };
+		373D353227DD9FCD0046DAD4 /* _Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = _Transaction.swift; sourceTree = "<group>"; };
+		373D353427DDA03D0046DAD4 /* TransactionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionViewModel.swift; sourceTree = "<group>"; };
 		378D1A3527C374E300BCE00B /* BudgetLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetLoader.swift; sourceTree = "<group>"; };
 		378D1A3727C43F0700BCE00B /* MonthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthView.swift; sourceTree = "<group>"; };
 		378D1A3927C4512900BCE00B /* budget.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = budget.plist; sourceTree = "<group>"; };
@@ -84,6 +88,7 @@
 			children = (
 				373D350D27DC7C9C0046DAD4 /* BudgetViewModel.swift */,
 				373D353027DD7FFE0046DAD4 /* SubAccountViewModel.swift */,
+				373D353427DDA03D0046DAD4 /* TransactionViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -113,6 +118,7 @@
 				37AACB0127C2D2F000F52F69 /* Transaction.swift */,
 				373D352527DD0DE20046DAD4 /* _Budget.swift */,
 				373D352E27DD7E810046DAD4 /* _SubAccount.swift */,
+				373D353227DD9FCD0046DAD4 /* _Transaction.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -267,8 +273,10 @@
 				37AACB0427C2D3B100F52F69 /* BudgetModel.swift in Sources */,
 				373D352F27DD7E810046DAD4 /* _SubAccount.swift in Sources */,
 				373D350E27DC7C9C0046DAD4 /* BudgetViewModel.swift in Sources */,
+				373D353327DD9FCD0046DAD4 /* _Transaction.swift in Sources */,
 				373D352027DD01DB0046DAD4 /* IndexView.swift in Sources */,
 				37AACB0227C2D2F000F52F69 /* Transaction.swift in Sources */,
+				373D353527DDA03D0046DAD4 /* TransactionViewModel.swift in Sources */,
 				373D351E27DCFF790046DAD4 /* SignUpView.swift in Sources */,
 				37AACAF227C18A6400F52F69 /* TreasuryApp.swift in Sources */,
 				378D1A3827C43F0700BCE00B /* MonthView.swift in Sources */,
