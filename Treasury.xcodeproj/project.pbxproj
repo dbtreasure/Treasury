@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		372FBBC127DDC49700552FBF /* CurrentMonth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 372FBBC027DDC49700552FBF /* CurrentMonth.swift */; };
 		373D350E27DC7C9C0046DAD4 /* BudgetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373D350D27DC7C9C0046DAD4 /* BudgetViewModel.swift */; };
 		373D351127DC81700046DAD4 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373D351027DC81700046DAD4 /* SignInView.swift */; };
 		373D351427DC82720046DAD4 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 373D351327DC82720046DAD4 /* FirebaseAuth */; };
@@ -34,6 +35,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		372FBBC027DDC49700552FBF /* CurrentMonth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentMonth.swift; sourceTree = "<group>"; };
 		373D350D27DC7C9C0046DAD4 /* BudgetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetViewModel.swift; sourceTree = "<group>"; };
 		373D350F27DC80720046DAD4 /* Treasury.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Treasury.entitlements; sourceTree = "<group>"; };
 		373D351027DC81700046DAD4 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
@@ -146,6 +148,7 @@
 				37AACAF527C18A6600F52F69 /* Assets.xcassets */,
 				37AACAF727C18A6600F52F69 /* Preview Content */,
 				373D351B27DC853E0046DAD4 /* ViewRouter.swift */,
+				372FBBC027DDC49700552FBF /* CurrentMonth.swift */,
 			);
 			path = Treasury;
 			sourceTree = "<group>";
@@ -241,6 +244,7 @@
 				378D1A3E27C468AE00BCE00B /* SubAccountView.swift in Sources */,
 				373D351C27DC853E0046DAD4 /* ViewRouter.swift in Sources */,
 				373D352D27DD79620046DAD4 /* AddSubAccountView.swift in Sources */,
+				372FBBC127DDC49700552FBF /* CurrentMonth.swift in Sources */,
 				373D352B27DD63AB0046DAD4 /* DecodableExtensions.swift in Sources */,
 				37AACAF427C18A6400F52F69 /* HomeView.swift in Sources */,
 				373D352627DD0DE20046DAD4 /* Budget.swift in Sources */,

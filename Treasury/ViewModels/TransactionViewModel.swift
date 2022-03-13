@@ -15,8 +15,13 @@ class TransactionViewModel: ObservableObject {
     @Published var transactions = [Transaction]()
     private let ref = Database.database().reference()
     private let dbPath = "transactions"
-    
+    private let currentDate = Date()
+    private var currentMonthIndex: Int
+    private let dateFormatter = DateFormatter()
     init() {
+        dateFormatter.dateFormat = "yyyy/mm/dd hh:mm:ss"
+        let index = Calendar.current.component(.month, from: currentDate)
+        currentMonthIndex = index
         initListener()
     }
     
@@ -27,7 +32,13 @@ class TransactionViewModel: ObservableObject {
                 
                 self.transactions = children.compactMap { snapshot in
                     return try? snapshot.data(as: Transaction.self)
-                }
+                }.filter({
+                    if let date = $0.transactionDate, Calendar.current.component(.month, from: date) == self.currentMonthIndex { return true
+                    } else {
+                        return false
+                    }
+                })
+                
             }
         }
     }

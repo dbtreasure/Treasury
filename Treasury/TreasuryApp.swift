@@ -11,6 +11,7 @@ import Firebase
 @main
 struct TreasuryApp: App {
     @StateObject var viewRouter = ViewRouter()
+    @StateObject var currentMonth = CurrentMonth()
     
     init() {
         FirebaseApp.configure()
@@ -21,6 +22,7 @@ struct TreasuryApp: App {
         WindowGroup {
             IndexView()
                 .environmentObject(viewRouter)
+                .environmentObject(currentMonth)
                 .environmentObject(BudgetViewModel())
                 .environmentObject(SubAccountViewModel())
                 .environmentObject(TransactionViewModel())

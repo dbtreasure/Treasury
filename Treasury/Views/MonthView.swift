@@ -12,6 +12,7 @@ struct MonthView: View {
     @EnvironmentObject private var budgetViewModel: BudgetViewModel
     @EnvironmentObject private var subAccountViewModel: SubAccountViewModel
     @EnvironmentObject private var transactionViewModel: TransactionViewModel
+    @EnvironmentObject private var currentMonth: CurrentMonth
     
     var body: some View {
         VStack {
@@ -91,7 +92,7 @@ struct MonthView: View {
             }
         }
         .padding([.leading, .trailing])
-        .navigationBarTitle("March")
+        .navigationBarTitle(currentMonth.name)
         .navigationBarItems(trailing: NavigationLink(destination: AddSubAccountView()) {
             Image(systemName: "folder.badge.plus")
         }
