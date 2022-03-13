@@ -32,6 +32,7 @@ struct HomeView: View {
                         }
                     }
             }.accentColor(.black)
+                .navigationViewStyle(.stack)
                 
         }
 

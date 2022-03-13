@@ -19,8 +19,8 @@ struct SignInView: View {
     @EnvironmentObject var subAccountViewModel: SubAccountViewModel
     @EnvironmentObject var transactionViewModel: TransactionViewModel
     
-    @State var email = "dbtreasure@gmail.com"
-    @State var password = "yoyoman"
+    @State var email = ""
+    @State var password = ""
     
     var body: some View {
         VStack(spacing: 15) {
