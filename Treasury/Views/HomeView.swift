@@ -41,14 +41,15 @@ struct HomeView: View {
         signOutProcessing = true
         let firebaseAuth = Auth.auth()
         do {
-          try firebaseAuth.signOut()
+            try firebaseAuth.signOut()
+            withAnimation {
+                viewRouter.changePage(.signInPage)
+            }
         } catch let signOutError as NSError {
           print("Error signing out: %@", signOutError)
             signOutProcessing = false
         }
-        withAnimation {
-            viewRouter.currentPage = .signInPage
-        }
+        
     }
 }
 

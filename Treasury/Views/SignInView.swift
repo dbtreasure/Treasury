@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import Firebase
+import FirebaseAuth
 
 struct SignInView: View {
     @State var signInProcessing = false
@@ -16,6 +17,7 @@ struct SignInView: View {
     @EnvironmentObject var viewRouter: ViewRouter
     @EnvironmentObject var budgetViewModel: BudgetViewModel
     @EnvironmentObject var subAccountViewModel: SubAccountViewModel
+    @EnvironmentObject var transactionViewModel: TransactionViewModel
     
     @State var email = "dbtreasure@gmail.com"
     @State var password = "yoyoman"
@@ -52,7 +54,7 @@ struct SignInView: View {
             HStack {
                 Text("Don't have an account?")
                 Button(action: {
-                    viewRouter.currentPage = .signUpPage
+                    viewRouter.changePage(.signUpPage)
                 }) {
                     Text("Sign Up")
                         .bold()
@@ -79,10 +81,11 @@ struct SignInView: View {
             case .some(_):
                 print("DANLOG User signed in")
                 signInProcessing = false
+                budgetViewModel.initListener()
+                subAccountViewModel.initListener()
+                transactionViewModel.initListener()
                 withAnimation {
-                    budgetViewModel.initListener()
-                    subAccountViewModel.initListener()
-                    viewRouter.currentPage = .homePage
+                    viewRouter.changePage(.homePage)
                 }
             }
         }

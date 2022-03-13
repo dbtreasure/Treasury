@@ -53,7 +53,7 @@ struct SignUpView: View {
             HStack {
                 Text("Already have an account?")
                 Button(action: {
-                    viewRouter.currentPage = .signInPage
+                    viewRouter.changePage(.signInPage)
                 }) {
                     Text("Log In")
                         .bold()
@@ -84,7 +84,7 @@ struct SignUpView: View {
                 subAccountViewModel.initListener()
                 budgetViewModel.addBudget()
                 signUpProcessing = false
-                viewRouter.currentPage = .homePage
+                viewRouter.changePage(.homePage)
             }
         }
     }

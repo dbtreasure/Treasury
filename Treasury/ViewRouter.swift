@@ -6,9 +6,14 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 class ViewRouter: ObservableObject {
-    @Published var currentPage: Page = .homePage
+    @Published var currentPage: Page = Auth.auth().currentUser != nil ? .homePage : .signInPage
+    
+    func changePage(_ page: Page) -> Void {
+        self.currentPage = page
+    }
 }
 
 enum Page {
