@@ -14,9 +14,10 @@ struct SignInView: View {
     @State var signInErrorMessage = ""
     
     @EnvironmentObject var viewRouter: ViewRouter
+    @EnvironmentObject var budgetViewModel: BudgetViewModel
     
-    @State var email = ""
-    @State var password = ""
+    @State var email = "dbtreasure@gmail.com"
+    @State var password = "yoyoman"
     
     var body: some View {
         VStack(spacing: 15) {
@@ -72,12 +73,14 @@ struct SignInView: View {
             }
             switch authResult {
             case .none:
-                print("Could not sign in user.")
+                print("DANLOG Could not sign in user.")
                 signInProcessing = false
             case .some(_):
-                print("User signed in")
+                print("DANLOG User signed in")
                 signInProcessing = false
                 withAnimation {
+                    print("DANLOG animating away")
+                    budgetViewModel.initListener()
                     viewRouter.currentPage = .homePage
                 }
             }

@@ -11,6 +11,7 @@ import Firebase
 struct SignUpView: View {
     
     @EnvironmentObject var viewRouter: ViewRouter
+    @EnvironmentObject private var budgetViewModel: BudgetViewModel
     
     @State var email = ""
     @State var password = ""
@@ -65,7 +66,6 @@ struct SignUpView: View {
     
     
     func signUpUser(userEmail: String, userPassword: String) {
-            
         signUpProcessing = true
         Auth.auth().createUser(withEmail: userEmail, password: userPassword) { authResult, error in
             guard error == nil else {
@@ -79,6 +79,7 @@ struct SignUpView: View {
                 signUpProcessing = false
             case .some(_):
                 print("User created")
+                budgetViewModel.addBudget()
                 signUpProcessing = false
                 viewRouter.currentPage = .homePage
             }

@@ -10,6 +10,8 @@ import Firebase
 
 struct HomeView: View {
     @EnvironmentObject var viewRouter: ViewRouter
+    @EnvironmentObject private var budgetViewModel: BudgetViewModel
+    
     @State var signOutProcessing = false
     var body: some View {
         VStack {
@@ -31,6 +33,7 @@ struct HomeView: View {
             }.accentColor(.black)
                 
         }
+
     }
     
     func signOutUser() {

@@ -11,14 +11,19 @@ import Firebase
 @main
 struct TreasuryApp: App {
     @StateObject var viewRouter = ViewRouter()
+    @StateObject var budgetViewModel = BudgetViewModel()
     
     init() {
         FirebaseApp.configure()
+        Database.database().isPersistenceEnabled = true
     }
     
     var body: some Scene {
         WindowGroup {
-            IndexView().environmentObject(viewRouter)
+            IndexView()
+                .environmentObject(viewRouter)
+                .environmentObject(budgetViewModel)
+            
         }
     }
 }

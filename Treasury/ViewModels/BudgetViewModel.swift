@@ -5,67 +5,54 @@
 //  Created by Daniel Treasure on 3/12/22.
 //
 
+import Combine
 import Foundation
+import FirebaseAuth
+import FirebaseDatabase
+import FirebaseDatabaseSwift
 
 class BudgetViewModel: ObservableObject {
-//    private var accounts: [SubAccount] = [
-//        SubAccount(name: "Groceries", budget: 300),
-//        SubAccount(name: "Hello Fresh", budget: 500),
-//        SubAccount(name: "Household", budget: 30),
-//        SubAccount(name: "Coffee", budget: 50),
-//        SubAccount(name: "Subscriptions", budget: 225),
-//        SubAccount(name: "Utilities", budget: 110),
-//        SubAccount(name: "Restaurant", budget: 300),
-//        SubAccount(name: "Insurance", budget: 170)
-//    ]
-//
-//    func getAccounts() -> [SubAccount] {
-//        return self.accounts
-//    }
-//
-//    func getSubAccountByName(name: String) -> SubAccount? {
-//        let instanceOfAccount = self.accounts.first(where: {$0.name == name})
-//        return instanceOfAccount
-//    }
-//
-//    func getSubAccountById(id: SubAccount.ID) -> SubAccount? {
-//        let instanceOfAccount = self.accounts.first(where: {$0.id == id})
-//        return instanceOfAccount
-//    }
-//
-//    func addAccount(account: SubAccount) {
-//        self.accounts.append(account)
-//    }
-//
-//    func getRemainingFunds() -> Int {
-//        return getTotalBudget() - getTotalTransactions()
-//    }
-//
-//    func getTotalTransactions() -> Int {
-//        var total = 0
-//        for account in self.accounts {
-//            total += account.sumOfTransactions()
-//        }
-//        return total
-//    }
-//
-//    func getTotalBudget() -> Int {
-//        var total = 0
-//        for account in self.accounts {
-//            total = total +  account.budget
-//        }
-//        return total
-//    }
-//
-//    init() {
-//        self.id = UUID()
-//        for account in self.accounts {
-//            for _ in 0...10 {
-//                let cost = Int.random(in: 0 ..< 100)
-//                let transaction = Transaction(date: Date.now, subAccount: account, total: cost, description: "Just one thing for $\(cost)")
-//                account.addTransaction(transaction: transaction)
-//            }
-//        }
-//
-//    }
+    @Published var budgets = [_Budget]()
+    private let ref = Database.database().reference()
+    private let dbPath = "budgets"
+    
+    
+    init() {
+        initListener()
+    }
+    
+    func initListener() {
+        if let userID = Auth.auth().currentUser?.uid {
+            print("DANLOG userID", userID)
+            
+            ref.child(dbPath).child(userID).observeSingleEvent(of: .value) { snapshot in
+                guard let children = snapshot.children.allObjects as? [DataSnapshot] else {
+                    return
+                }
+                
+                self.budgets = children.compactMap { snapshot in
+                    return try? snapshot.data(as: _Budget.self)
+                }
+            }
+        }
+    }
+    
+    func addBudget() {
+        if let userID = Auth.auth().currentUser?.uid {
+            guard let autoId = ref.child(dbPath).childByAutoId().key else {
+                return
+            }
+            let budget = _Budget(id: autoId, updatedAt: Date.now, ownerId: userID)
+            
+            do {
+                let budgetAsDictionary = try budget.asDictionary()
+                try ref.child("\(dbPath)/\(userID)/\(budget.id)").setValue(budgetAsDictionary)
+                initListener()
+            } catch  {
+                return
+            }
+            
+        }
+    }
+    
 }

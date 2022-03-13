@@ -18,12 +18,14 @@ struct IndexView: View {
             SignInView()
         case .homePage:
             HomeView()
+                .onAppear(perform: {print("DANLOG Indexview changing to HOMEVIEW")})
         }
     }
 }
 
 struct IndexView_Previews: PreviewProvider {
     static var previews: some View {
-        IndexView().environmentObject(ViewRouter())
+        IndexView()
+            .environmentObject(ViewRouter())
     }
 }

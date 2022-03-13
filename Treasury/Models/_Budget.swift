@@ -6,3 +6,10 @@
 //
 
 import Foundation
+import FirebaseDatabaseSwift
+
+struct _Budget: Codable, Identifiable {
+    var id: String
+    @ServerTimestamp var updatedAt = Date()
+    var ownerId: String
+}
