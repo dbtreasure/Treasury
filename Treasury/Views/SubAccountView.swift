@@ -58,7 +58,9 @@ struct SubAccountView: View {
                         .font(.title2)
                         .fontWeight(.semibold)
                     Spacer()
-                    Text("-$\(transactionViewModel.getTransactionSumForSubAccount(subAccountId: account.id))")
+                    (transactionViewModel.getTransactionSumForSubAccount(subAccountId: account.id) <= 0 ?
+                     Text("$\(transactionViewModel.getTransactionSumForSubAccount(subAccountId: account.id))") :
+                     Text("-$\(transactionViewModel.getTransactionSumForSubAccount(subAccountId: account.id))"))
                         .font(.title2)
                         .fontWeight(.semibold)
                 }

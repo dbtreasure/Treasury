@@ -64,8 +64,9 @@ struct MonthView: View {
                         .font(.title2)
                         .fontWeight(.semibold)
                     Spacer()
-                    (transactionViewModel.getTransactionsSumForBudget() > 0 ? Text("-$\(transactionViewModel.getTransactionsSumForBudget())") :
-                        Text("$\(transactionViewModel.getTransactionsSumForBudget())"))
+                    (transactionViewModel.getTransactionsSumForBudget() <= 0 ?
+                     Text("$\(transactionViewModel.getTransactionsSumForBudget())") :
+                     Text("-$\(transactionViewModel.getTransactionsSumForBudget())"))
                         .font(.title2)
                         .fontWeight(.semibold)
                 }

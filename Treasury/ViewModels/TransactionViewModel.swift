@@ -38,7 +38,6 @@ class TransactionViewModel: ObservableObject {
                         return false
                     }
                 })
-                
             }
         }
     }
