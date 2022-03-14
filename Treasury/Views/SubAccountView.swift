@@ -28,6 +28,7 @@ struct SubAccountView: View {
                                 .font(.title3)
                             Spacer()
                             Text("$\(transaction.total)")
+                                .fontWeight(.semibold)
                         }
                     }
                 }
@@ -60,7 +61,7 @@ struct SubAccountView: View {
                     Spacer()
                     (transactionViewModel.getTransactionSumForSubAccount(subAccountId: account.id) <= 0 ?
                      Text("$\(transactionViewModel.getTransactionSumForSubAccount(subAccountId: account.id))") :
-                     Text("-$\(transactionViewModel.getTransactionSumForSubAccount(subAccountId: account.id))"))
+                        Text("-$\(transactionViewModel.getTransactionSumForSubAccount(subAccountId: account.id))").foregroundColor(.red))
                         .font(.title2)
                         .fontWeight(.semibold)
                 }
@@ -88,12 +89,13 @@ struct SubAccountView: View {
         }
         .padding([.leading, .trailing])
         .navigationBarTitle(account.title)
-        .navigationBarItems(trailing:
-                                NavigationLink(destination: AddTransactionView(account: account)) {
-                Image(systemName: "doc.badge.plus")
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                NavigationLink(destination: AddTransactionView(account: account)) {
+                    Image(systemName: "doc.badge.plus")
+                }.foregroundColor(.black)
             }
-            
-        ).foregroundColor(.black)
+        } 
     }
 }
 

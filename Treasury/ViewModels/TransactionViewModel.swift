@@ -19,7 +19,8 @@ class TransactionViewModel: ObservableObject {
     private var currentMonthIndex: Int
     private let dateFormatter = DateFormatter()
     init() {
-        dateFormatter.dateFormat = "yyyy/mm/dd hh:mm:ss"
+        dateFormatter.dateFormat = "yyyy/mm/dd hh:mm:ss Z"
+        dateFormatter.timeZone = .autoupdatingCurrent
         let index = Calendar.current.component(.month, from: currentDate)
         currentMonthIndex = index
         initListener()
@@ -29,11 +30,18 @@ class TransactionViewModel: ObservableObject {
         if let userID = Auth.auth().currentUser?.uid {
             ref.child(dbPath).child(userID).observeSingleEvent(of: .value) { snapshot in
                 guard let children = snapshot.children.allObjects as? [DataSnapshot] else { return }
+                let localDate = Date()
+                
+                print("DANLOG", self.dateFormatter.string(from: localDate))
+                
                 
                 self.transactions = children.compactMap { snapshot in
                     return try? snapshot.data(as: Transaction.self)
                 }.filter({
-                    if let date = $0.transactionDate, Calendar.current.component(.month, from: date) == self.currentMonthIndex { return true
+                    if let date = $0.transactionDate, Calendar.current.component(.month, from: date) == self.currentMonthIndex {
+                        print("DANLOG", date)
+                        print("DANLOG date", Calendar.current.component(.day, from: date))
+                        return true
                     } else {
                         return false
                     }

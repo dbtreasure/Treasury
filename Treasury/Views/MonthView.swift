@@ -28,8 +28,10 @@ struct MonthView: View {
                                 (
                                     transactionViewModel.getRemainingFundsForSubAccount(subAccountId: account.id, budget: account.budget) < 0 ?
                                     Text("$\(transactionViewModel.getRemainingFundsForSubAccount(subAccountId: account.id, budget: account.budget))")
+                                        .fontWeight(.semibold)
                                         .foregroundColor(.red) :
                                     Text("$\(transactionViewModel.getRemainingFundsForSubAccount(subAccountId: account.id, budget: account.budget))")
+                                        .fontWeight(.semibold)
                                         .foregroundColor(.black)
                                 )
                             }
@@ -66,7 +68,7 @@ struct MonthView: View {
                     Spacer()
                     (transactionViewModel.getTransactionsSumForBudget() <= 0 ?
                      Text("$\(transactionViewModel.getTransactionsSumForBudget())") :
-                     Text("-$\(transactionViewModel.getTransactionsSumForBudget())"))
+                        Text("-$\(transactionViewModel.getTransactionsSumForBudget())").foregroundColor(.red))
                         .font(.title2)
                         .fontWeight(.semibold)
                 }
@@ -92,13 +94,16 @@ struct MonthView: View {
                 }
             }
         }
-        .padding([.leading, .trailing])
-        .navigationBarTitle(currentMonth.name)
-        .navigationBarItems(trailing: NavigationLink(destination: AddSubAccountView()) {
-            Image(systemName: "folder.badge.plus")
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                NavigationLink(destination: AddSubAccountView()) {
+                    Image(systemName: "folder.badge.plus")
+                }.foregroundColor(.black)
+            }
         }
-                                
-        ).foregroundColor(.black)
+        .navigationBarTitle(currentMonth.name)
+        .padding([.leading, .trailing])
+        
     }
 }
 struct MonthView_Previews: PreviewProvider {
