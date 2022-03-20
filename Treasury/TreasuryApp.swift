@@ -13,13 +13,12 @@ struct TreasuryApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     
     @StateObject var viewRouter = ViewRouter()
-    @StateObject var currentMonth = CurrentMonth()
+    
     
     var body: some Scene {
         WindowGroup {
             IndexView()
                 .environmentObject(viewRouter)
-                .environmentObject(currentMonth)
         }
     }
 }

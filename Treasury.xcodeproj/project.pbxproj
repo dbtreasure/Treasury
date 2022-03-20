@@ -22,6 +22,8 @@
 		373D352D27DD79620046DAD4 /* AddSubAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373D352C27DD79620046DAD4 /* AddSubAccountView.swift */; };
 		373D352F27DD7E810046DAD4 /* SubAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373D352E27DD7E810046DAD4 /* SubAccount.swift */; };
 		373D353327DD9FCD0046DAD4 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373D353227DD9FCD0046DAD4 /* Transaction.swift */; };
+		3787415827E6FE5D00AE5611 /* YearView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3787415727E6FE5D00AE5611 /* YearView.swift */; };
+		3787415A27E7EC7000AE5611 /* FiscalMonth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3787415927E7EC7000AE5611 /* FiscalMonth.swift */; };
 		378D1A3827C43F0700BCE00B /* MonthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378D1A3727C43F0700BCE00B /* MonthView.swift */; };
 		378D1A3E27C468AE00BCE00B /* SubAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378D1A3D27C468AE00BCE00B /* SubAccountView.swift */; };
 		378D1A4227C482C200BCE00B /* AddTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378D1A4127C482C200BCE00B /* AddTransactionView.swift */; };
@@ -45,6 +47,8 @@
 		373D352C27DD79620046DAD4 /* AddSubAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSubAccountView.swift; sourceTree = "<group>"; };
 		373D352E27DD7E810046DAD4 /* SubAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubAccount.swift; sourceTree = "<group>"; };
 		373D353227DD9FCD0046DAD4 /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
+		3787415727E6FE5D00AE5611 /* YearView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YearView.swift; sourceTree = "<group>"; };
+		3787415927E7EC7000AE5611 /* FiscalMonth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiscalMonth.swift; sourceTree = "<group>"; };
 		378D1A3727C43F0700BCE00B /* MonthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthView.swift; sourceTree = "<group>"; };
 		378D1A3D27C468AE00BCE00B /* SubAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubAccountView.swift; sourceTree = "<group>"; };
 		378D1A4127C482C200BCE00B /* AddTransactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTransactionView.swift; sourceTree = "<group>"; };
@@ -84,6 +88,7 @@
 				373D352527DD0DE20046DAD4 /* Budget.swift */,
 				373D352E27DD7E810046DAD4 /* SubAccount.swift */,
 				373D353227DD9FCD0046DAD4 /* Transaction.swift */,
+				3787415927E7EC7000AE5611 /* FiscalMonth.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -99,6 +104,7 @@
 				373D351D27DCFF790046DAD4 /* SignUpView.swift */,
 				373D351F27DD01DB0046DAD4 /* IndexView.swift */,
 				373D352C27DD79620046DAD4 /* AddSubAccountView.swift */,
+				3787415727E6FE5D00AE5611 /* YearView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -225,6 +231,7 @@
 			files = (
 				373D352927DD56790046DAD4 /* EncodableExtensions.swift in Sources */,
 				378D1A3E27C468AE00BCE00B /* SubAccountView.swift in Sources */,
+				3787415A27E7EC7000AE5611 /* FiscalMonth.swift in Sources */,
 				373D351C27DC853E0046DAD4 /* ViewRouter.swift in Sources */,
 				373D352D27DD79620046DAD4 /* AddSubAccountView.swift in Sources */,
 				372FBBC127DDC49700552FBF /* CurrentMonth.swift in Sources */,
@@ -239,6 +246,7 @@
 				378D1A3827C43F0700BCE00B /* MonthView.swift in Sources */,
 				373D351127DC81700046DAD4 /* SignInView.swift in Sources */,
 				378D1A4227C482C200BCE00B /* AddTransactionView.swift in Sources */,
+				3787415827E6FE5D00AE5611 /* YearView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

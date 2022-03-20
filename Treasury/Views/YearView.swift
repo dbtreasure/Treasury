@@ -1,55 +1,48 @@
 //
-//  MonthView.swift
+//  YearView.swift
 //  Treasury
 //
-//  Created by Daniel Treasure on 2/21/22.
+//  Created by Daniel Treasure on 3/20/22.
 //
 
 import SwiftUI
-import Firebase
 import FirebaseAuth
 import FirebaseDatabase
 
-struct MonthView: View {
+struct YearView: View {
     @EnvironmentObject private var currentMonth: CurrentMonth
+    @EnvironmentObject var viewRouter: ViewRouter
     @ObservedObject var viewModel: ViewModel
+    @State var signOutProcessing = false
     
     var body: some View {
-        VStack {
+        VStack{
             ScrollView {
                 VStack(alignment: .center, spacing: 10) {
-                    ForEach(viewModel.subAccounts, id: \.id) { account in
+                    ForEach(viewModel.months, id: \.monthIndex) { month in
                         NavigationLink(
-                            destination: SubAccountView(
-                                viewModel: .init(subAccount: account)
+                            destination: MonthView(
+                                viewModel: .init(month: month, subAccounts: viewModel.subAccounts)
                             )) {
                             HStack(alignment: .center, spacing: 10) {
-                                Text(account.title)
+                                Text(month.monthName)
                                     .font(.title3)
                                     .foregroundStyle(.black)
                                 Spacer()
                                 (
-                                    viewModel.getRemainingFundsForSubAccount(subAccountId: account.id, budget: account.budget) < 0 ?
-                                    Text("$\(viewModel.getRemainingFundsForSubAccount(subAccountId: account.id, budget: account.budget))")
+                                    month.bottomLine() < 0 ?
+                                    Text("$\(month.bottomLine())")
                                         .fontWeight(.semibold)
                                         .foregroundColor(.red) :
-                                    Text("$\(viewModel.getRemainingFundsForSubAccount(subAccountId: account.id, budget: account.budget))")
+                                    Text("$\(month.bottomLine())")
                                         .fontWeight(.semibold)
                                         .foregroundColor(.black)
                                 )
                             }
                         }
-                        
                     }
                 }
             }
-            .frame(
-                  minWidth: 0,
-                  maxWidth: .infinity,
-                  minHeight: 0,
-                  maxHeight: .infinity,
-                  alignment: .topLeading
-                )
             VStack(alignment: .center, spacing: 6) {
                 HStack(
                     alignment: .center, spacing: 10
@@ -58,7 +51,7 @@ struct MonthView: View {
                         .font(.title2)
                         .fontWeight(.semibold)
                     Spacer()
-                    Text("$\(viewModel.getBudgetForAllSubAccounts())")
+                    Text("$\(viewModel.getBudgetForAllSubAccounts()*viewModel.months.count)")
                         .font(.title2)
                         .fontWeight(.semibold)
                 }
@@ -99,58 +92,66 @@ struct MonthView: View {
         }
         .navigationBarBackButtonHidden(true)
         .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                if let subAccount = viewModel.subAccounts.first {
-                    NavigationLink(destination: AddSubAccountView(viewModel: .init(budgetId: subAccount.budgetId))) {
-                        Image(systemName: "folder.badge.plus")
-                    }.foregroundColor(.black)
-                }
-                
-            }
-            
             ToolbarItem(placement: .navigationBarLeading) {
-                if let year = currentMonth.year {
-                    NavigationLink(destination: YearView(viewModel: .init())) {
-                        
-                        HStack(alignment: .center) {
-                            Image(systemName: "arrowshape.turn.up.backward")
-                                
-                            Text(String(year))
+                if signOutProcessing {
+                    ProgressView()
+                } else {
+                    Button() {
+                        signOutUser()
+                    }label: {
+                        HStack {
+                            Text("Logout")
                                 .bold()
                         }
+                        
                     }
                 }
             }
-            
-            
         }
-        .navigationBarTitle(viewModel.month.monthName)
+        .navigationBarTitle(String(currentMonth.year))
         .padding([.leading, .trailing, .bottom])
+    }
+    
+    func signOutUser() {
+        signOutProcessing = true
+        let firebaseAuth = Auth.auth()
+        do {
+            try firebaseAuth.signOut()
+            withAnimation {
+                viewRouter.changePage(.signInPage)
+            }
+        } catch let signOutError as NSError {
+          print("Error signing out: %@", signOutError)
+            signOutProcessing = false
+        }
         
     }
 }
 
-extension MonthView {
+extension YearView {
     class ViewModel: ObservableObject {
-        @Published var subAccounts = [SubAccount]()
         @Published var transactions = [Transaction]()
-        @Published var month: FiscalMonth
+        @Published var subAccounts = [SubAccount]()
+        @Published var months = [FiscalMonth]()
         
         private let ref = Database.database().reference()
-        
         private let subAccountDbPath = "subAccounts"
         private let transactionsDbPath = "transactions"
         private let currentDate = Date()
-        private var currentMonthIndex: Int
+        private var currentYearIndex: Int
         private let dateFormatter = DateFormatter()
+        let nameFormatter = DateFormatter()
         
-        init(month: FiscalMonth, subAccounts: [SubAccount]) {
+        
+        init() {
+            nameFormatter.timeZone = .autoupdatingCurrent
+            nameFormatter.dateFormat = "MMMM" // format January, February, March, ...
+            
             dateFormatter.dateFormat = "yyyy/mm/dd hh:mm:ss Z"
             dateFormatter.timeZone = .autoupdatingCurrent
-            currentMonthIndex = Calendar.current.component(.month, from: currentDate)
-            self.month = month
-            self.transactions = month.transactions
-            self.subAccounts = subAccounts
+            currentYearIndex = Calendar.current.component(.year, from: currentDate)
+            fetchTransactions()
+            fetchSubAccounts()
         }
         
         private func fetchSubAccounts() {
@@ -169,35 +170,46 @@ extension MonthView {
             if let userID = Auth.auth().currentUser?.uid {
                 ref.child(transactionsDbPath).child(userID).observe(.value) { snapshot in
                     guard let children = snapshot.children.allObjects as? [DataSnapshot] else { return }
-
+                    
                     self.transactions = children.compactMap { snapshot in
                         return try? snapshot.data(as: Transaction.self)
-                    }.filter({
-                        if let date = $0.transactionDate, Calendar.current.component(.month, from: date) == self.month.monthIndex {
+                    }
+                    .filter({
+                        if let date = $0.transactionDate, Calendar.current.component(.year, from: date) == self.currentYearIndex {
                             return true
                         } else {
                             return false
                         }
                     })
+                    .sorted(by: {
+                        $0.transactionDate!.compare($1.transactionDate!) == .orderedAscending
+                    })
+                    self.months = self.transactions.reduce(into: [FiscalMonth]()) {
+                        let monthIdx = Calendar.current.component(.month, from: $1.transactionDate!)
+                        let monthName = self.nameFormatter.string(from: $1.transactionDate!)
+                        if let matchIdx = $0.firstIndex(where: {$0.monthIndex == monthIdx}) {
+                            $0[matchIdx].transactions.append($1)
+                            $0[matchIdx].totalExpenses += $1.total
+                        } else {
+                            $0.append(
+                                FiscalMonth(
+                                    monthName: monthName,
+                                    monthIndex: monthIdx,
+                                    totalExpenses: $1.total,
+                                    transactions: [$1],
+                                    totalBudget: self.getBudgetForAllSubAccounts(),
+                                    subAccounts: []
+                                )
+                            )
+                        }
+                    }
+                    
                 }
             }
         }
         
-        func getTransactionsForSubAccount(subAccountId: String) -> [Transaction] {
-            return self.transactions.filter({$0.subAccountId == subAccountId})
-        }
-        
         func getBudgetForAllSubAccounts() -> Int {
             return self.subAccounts.reduce(0, {$0 + $1.budget})
-        }
-        
-        func getTransactionSumForSubAccount(subAccountId: String) -> Int {
-            let transactions = getTransactionsForSubAccount(subAccountId: subAccountId)
-            return transactions.reduce(0, {$0 + $1.total})
-        }
-        
-        func getRemainingFundsForSubAccount(subAccountId: String, budget: Int) -> Int {
-            return budget - getTransactionSumForSubAccount(subAccountId: subAccountId)
         }
         
         func getTransactionsSumForBudget() -> Int {
@@ -205,14 +217,14 @@ extension MonthView {
         }
         
         func getRemainingFundsForBudget(_ budgetForAllSubAccounts: Int) -> Int {
-            return budgetForAllSubAccounts - getTransactionsSumForBudget()
+            return (budgetForAllSubAccounts * self.months.count) - getTransactionsSumForBudget()
         }
-        
     }
 }
 
-struct MonthView_Previews: PreviewProvider {
+struct YearView_Previews: PreviewProvider {
     static var previews: some View {
-        MonthView(viewModel: .init(month: FiscalMonth(monthName: "March", monthIndex: 3, totalExpenses: 123, transactions: [], totalBudget: 100, subAccounts: []), subAccounts: []))
+        YearView(viewModel: .init())
     }
 }
+
