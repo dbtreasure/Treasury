@@ -6,13 +6,15 @@
 //
 
 import SwiftUI
+import Firebase
+import FirebaseAuth
+import FirebaseDatabase
 
 struct AddSubAccountView: View {
     @State private var title: String = ""
     @State private var total: Int = 0
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    @EnvironmentObject private var budgetViewModel: BudgetViewModel
-    @EnvironmentObject private var subAccountViewModel: SubAccountViewModel
+    @ObservedObject var viewModel: ViewModel
     
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
@@ -62,17 +64,43 @@ struct AddSubAccountView: View {
                 .padding(.bottom)
                 Spacer()
             }
-        }
+        }.padding(.bottom)
     }
     
     func submitSubAccount() {
-        subAccountViewModel.addSubAccount(title: title, budgetId: budgetViewModel.budgets.first!.id, budget: total)
+        viewModel.addSubAccount(title: title, budget: total)
         presentationMode.wrappedValue.dismiss()
+    }
+}
+
+extension AddSubAccountView {
+    class ViewModel: ObservableObject {
+        private var budgetId: String
+        
+        init(budgetId: String) {
+            self.budgetId = budgetId
+        }
+        
+        private let ref = Database.database().reference()
+        private let dbPath = "subAccounts"
+        
+        func addSubAccount(title: String, budget: Int) {
+            if let userID = Auth.auth().currentUser?.uid {
+                guard let autoId = ref.child(dbPath).child(userID).childByAutoId().key else { return }
+                let subAccount = SubAccount(id: autoId, updatedAt: Date.now, budgetId: budgetId, ownerId: userID, title: title, budget: budget)
+                do {
+                    let subAccountAsDictionary = try subAccount.asDictionary()
+                    ref.child("\(dbPath)/\(userID)/\(subAccount.id)").setValue(subAccountAsDictionary)
+                } catch {
+                    
+                }
+            }
+        }
     }
 }
 
 struct AddSubAccountView_Previews: PreviewProvider {
     static var previews: some View {
-        AddSubAccountView()
+        AddSubAccountView(viewModel: .init(budgetId: "abc"))
     }
 }

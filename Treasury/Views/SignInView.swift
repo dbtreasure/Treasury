@@ -15,9 +15,6 @@ struct SignInView: View {
     @State var signInErrorMessage = ""
     
     @EnvironmentObject var viewRouter: ViewRouter
-    @EnvironmentObject var budgetViewModel: BudgetViewModel
-    @EnvironmentObject var subAccountViewModel: SubAccountViewModel
-    @EnvironmentObject var transactionViewModel: TransactionViewModel
     
     @State var email = ""
     @State var password = ""
@@ -63,7 +60,7 @@ struct SignInView: View {
             }
                 .opacity(0.9)
         }
-            .padding()
+        .padding(.bottom)
     }
     
     func signInUser(userEmail: String, userPassword: String) {
@@ -81,9 +78,6 @@ struct SignInView: View {
             case .some(_):
                 print("DANLOG User signed in")
                 signInProcessing = false
-                budgetViewModel.initListener()
-                subAccountViewModel.initListener()
-                transactionViewModel.initListener()
                 withAnimation {
                     viewRouter.changePage(.homePage)
                 }

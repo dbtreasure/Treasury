@@ -13,9 +13,9 @@ struct IndexView: View {
     var body: some View {
         switch viewRouter.currentPage {
         case .signUpPage:
-            SignUpView()
+            SignUpView(viewModel: .init()).padding([.leading, .trailing])
         case .signInPage:
-            SignInView()
+            SignInView().padding([.leading, .trailing])
         case .homePage:
             HomeView()
         }

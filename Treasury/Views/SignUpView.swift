@@ -7,12 +7,13 @@
 
 import SwiftUI
 import Firebase
+import FirebaseAuth
+import FirebaseDatabase
 
 struct SignUpView: View {
     
     @EnvironmentObject var viewRouter: ViewRouter
-    @EnvironmentObject private var budgetViewModel: BudgetViewModel
-    @EnvironmentObject private var subAccountViewModel: SubAccountViewModel
+    @ObservedObject var viewModel: ViewModel
     
     @State var email = ""
     @State var password = ""
@@ -62,7 +63,7 @@ struct SignUpView: View {
             }
                 .opacity(0.9)
         }
-            .padding()
+        .padding(.bottom)
     }
     
     
@@ -80,9 +81,7 @@ struct SignUpView: View {
                 signUpProcessing = false
             case .some(_):
                 print("User created")
-                budgetViewModel.initListener()
-                subAccountViewModel.initListener()
-                budgetViewModel.addBudget()
+                viewModel.addBudget()
                 signUpProcessing = false
                 viewRouter.changePage(.homePage)
             }
@@ -91,9 +90,33 @@ struct SignUpView: View {
 
 }
 
+extension SignUpView {
+    class ViewModel: ObservableObject {
+        private let ref = Database.database().reference()
+        private let dbPath = "budgets"
+        
+        func addBudget() {
+            if let userID = Auth.auth().currentUser?.uid {
+                guard let autoId = ref.child(dbPath).child(userID).childByAutoId().key else {
+                    return
+                }
+                let budget = Budget(id: autoId, updatedAt: Date.now, ownerId: userID)
+                
+                do {
+                    let budgetAsDictionary = try budget.asDictionary()
+                    ref.child("\(dbPath)/\(userID)/\(budget.id)").setValue(budgetAsDictionary)
+                } catch  {
+                    return
+                }
+                
+            }
+        }
+    }
+}
+
 struct SignUpView_Previews: PreviewProvider {
     static var previews: some View {
-        SignUpView()
+        SignUpView(viewModel: .init())
     }
 }
 

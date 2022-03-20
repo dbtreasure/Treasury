@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		372FBBC127DDC49700552FBF /* CurrentMonth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 372FBBC027DDC49700552FBF /* CurrentMonth.swift */; };
-		373D350E27DC7C9C0046DAD4 /* BudgetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373D350D27DC7C9C0046DAD4 /* BudgetViewModel.swift */; };
 		373D351127DC81700046DAD4 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373D351027DC81700046DAD4 /* SignInView.swift */; };
 		373D351427DC82720046DAD4 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 373D351327DC82720046DAD4 /* FirebaseAuth */; };
 		373D351627DC82720046DAD4 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 373D351527DC82720046DAD4 /* FirebaseDatabase */; };
@@ -22,9 +21,7 @@
 		373D352B27DD63AB0046DAD4 /* DecodableExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373D352A27DD63AB0046DAD4 /* DecodableExtensions.swift */; };
 		373D352D27DD79620046DAD4 /* AddSubAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373D352C27DD79620046DAD4 /* AddSubAccountView.swift */; };
 		373D352F27DD7E810046DAD4 /* SubAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373D352E27DD7E810046DAD4 /* SubAccount.swift */; };
-		373D353127DD7FFE0046DAD4 /* SubAccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373D353027DD7FFE0046DAD4 /* SubAccountViewModel.swift */; };
 		373D353327DD9FCD0046DAD4 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373D353227DD9FCD0046DAD4 /* Transaction.swift */; };
-		373D353527DDA03D0046DAD4 /* TransactionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373D353427DDA03D0046DAD4 /* TransactionViewModel.swift */; };
 		378D1A3827C43F0700BCE00B /* MonthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378D1A3727C43F0700BCE00B /* MonthView.swift */; };
 		378D1A3E27C468AE00BCE00B /* SubAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378D1A3D27C468AE00BCE00B /* SubAccountView.swift */; };
 		378D1A4227C482C200BCE00B /* AddTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378D1A4127C482C200BCE00B /* AddTransactionView.swift */; };
@@ -36,7 +33,6 @@
 
 /* Begin PBXFileReference section */
 		372FBBC027DDC49700552FBF /* CurrentMonth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentMonth.swift; sourceTree = "<group>"; };
-		373D350D27DC7C9C0046DAD4 /* BudgetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetViewModel.swift; sourceTree = "<group>"; };
 		373D350F27DC80720046DAD4 /* Treasury.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Treasury.entitlements; sourceTree = "<group>"; };
 		373D351027DC81700046DAD4 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		373D351B27DC853E0046DAD4 /* ViewRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewRouter.swift; sourceTree = "<group>"; };
@@ -48,9 +44,7 @@
 		373D352A27DD63AB0046DAD4 /* DecodableExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecodableExtensions.swift; sourceTree = "<group>"; };
 		373D352C27DD79620046DAD4 /* AddSubAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSubAccountView.swift; sourceTree = "<group>"; };
 		373D352E27DD7E810046DAD4 /* SubAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubAccount.swift; sourceTree = "<group>"; };
-		373D353027DD7FFE0046DAD4 /* SubAccountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubAccountViewModel.swift; sourceTree = "<group>"; };
 		373D353227DD9FCD0046DAD4 /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
-		373D353427DDA03D0046DAD4 /* TransactionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionViewModel.swift; sourceTree = "<group>"; };
 		378D1A3727C43F0700BCE00B /* MonthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthView.swift; sourceTree = "<group>"; };
 		378D1A3D27C468AE00BCE00B /* SubAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubAccountView.swift; sourceTree = "<group>"; };
 		378D1A4127C482C200BCE00B /* AddTransactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTransactionView.swift; sourceTree = "<group>"; };
@@ -75,16 +69,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		373D350C27DC7C4B0046DAD4 /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-				373D350D27DC7C9C0046DAD4 /* BudgetViewModel.swift */,
-				373D353027DD7FFE0046DAD4 /* SubAccountViewModel.swift */,
-				373D353427DDA03D0046DAD4 /* TransactionViewModel.swift */,
-			);
-			path = ViewModels;
-			sourceTree = "<group>";
-		};
 		373D352727DD56690046DAD4 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -141,7 +125,6 @@
 				373D352727DD56690046DAD4 /* Extensions */,
 				373D352327DD0D850046DAD4 /* GoogleService-Info.plist */,
 				373D350F27DC80720046DAD4 /* Treasury.entitlements */,
-				373D350C27DC7C4B0046DAD4 /* ViewModels */,
 				378D1A4027C4827700BCE00B /* Views */,
 				378D1A3F27C4826500BCE00B /* Models */,
 				37AACAF127C18A6400F52F69 /* TreasuryApp.swift */,
@@ -249,16 +232,13 @@
 				37AACAF427C18A6400F52F69 /* HomeView.swift in Sources */,
 				373D352627DD0DE20046DAD4 /* Budget.swift in Sources */,
 				373D352F27DD7E810046DAD4 /* SubAccount.swift in Sources */,
-				373D350E27DC7C9C0046DAD4 /* BudgetViewModel.swift in Sources */,
 				373D353327DD9FCD0046DAD4 /* Transaction.swift in Sources */,
 				373D352027DD01DB0046DAD4 /* IndexView.swift in Sources */,
-				373D353527DDA03D0046DAD4 /* TransactionViewModel.swift in Sources */,
 				373D351E27DCFF790046DAD4 /* SignUpView.swift in Sources */,
 				37AACAF227C18A6400F52F69 /* TreasuryApp.swift in Sources */,
 				378D1A3827C43F0700BCE00B /* MonthView.swift in Sources */,
 				373D351127DC81700046DAD4 /* SignInView.swift in Sources */,
 				378D1A4227C482C200BCE00B /* AddTransactionView.swift in Sources */,
-				373D353127DD7FFE0046DAD4 /* SubAccountViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
