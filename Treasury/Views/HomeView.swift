@@ -9,44 +9,18 @@ import SwiftUI
 import Firebase
 
 struct HomeView: View {
-    @EnvironmentObject var viewRouter: ViewRouter
-    @State var signOutProcessing = false
+    @StateObject var currentMonth = CurrentMonth()
     
     var body: some View {
         NavigationView {
-            MonthView(viewModel: .init())
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        if signOutProcessing {
-                            ProgressView()
-                        } else {
-                            Button() {
-                                signOutUser()
-                            }label: {
-                                Image(systemName: "arrowshape.turn.up.backward")
-                            }
-                        }
-                    }
-                }
+            YearView(viewModel: .init())
         }
+        .environmentObject(currentMonth)
         .accentColor(.black)
         .navigationViewStyle(.stack)
     }
     
-    func signOutUser() {
-        signOutProcessing = true
-        let firebaseAuth = Auth.auth()
-        do {
-            try firebaseAuth.signOut()
-            withAnimation {
-                viewRouter.changePage(.signInPage)
-            }
-        } catch let signOutError as NSError {
-          print("Error signing out: %@", signOutError)
-            signOutProcessing = false
-        }
-        
-    }
+    
 }
 
 struct HomeView_Previews: PreviewProvider {
