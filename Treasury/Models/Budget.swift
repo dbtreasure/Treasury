@@ -6,10 +6,20 @@
 //
 
 import Foundation
-import FirebaseDatabaseSwift
+import FirebaseFirestoreSwift
 
-struct Budget: Codable, Identifiable {
-    var id: String
-    @ServerTimestamp var updatedAt = Date()
-    var ownerId: String
+struct Budget: Codable {
+    @DocumentID var id: String?
+    var ownerIds: [String]
+    
+    enum CodingKeys: CodingKey {
+        case id
+        case ownerIds
+    }
+}
+
+extension Budget {
+    func collectionId() -> String {
+        return "budgets"
+    }
 }

@@ -6,9 +6,8 @@
 //
 
 import SwiftUI
-import Firebase
 import FirebaseAuth
-import FirebaseDatabase
+import FirebaseFirestore
 
 struct SignUpView: View {
     
@@ -34,7 +33,9 @@ struct SignUpView: View {
             Spacer()
             SignUpCredentialFields(email: $email, password: $password, passwordConfirmation: $passwordConfirmation)
             Button(action: {
-                signUpUser(userEmail: email, userPassword: password)
+                Task {
+                    await signUpUser(userEmail: email, userPassword: password)
+                }
             }) {
                 Text("Sign Up")
                     .bold()
@@ -66,49 +67,41 @@ struct SignUpView: View {
         .padding(.bottom)
     }
     
-    
-    func signUpUser(userEmail: String, userPassword: String) {
+    @MainActor
+    func signUpUser(userEmail: String, userPassword: String) async {
         signUpProcessing = true
-        Auth.auth().createUser(withEmail: userEmail, password: userPassword) { authResult, error in
-            guard error == nil else {
-                signUpErrorMessage = error!.localizedDescription
-                signUpProcessing = false
-                return
-            }
-            switch authResult {
-            case .none:
-                print("Could not create account.")
-                signUpProcessing = false
-            case .some(_):
-                print("User created")
-                viewModel.addBudget()
+        do {
+           let signupResult = try await Auth.auth().createUser(withEmail: userEmail, password: userPassword)
+            let user = signupResult.user
+            
+            print("User created")
+            Task {
+                await viewModel.addBudget(user: user)
                 signUpProcessing = false
                 viewRouter.changePage(.homePage)
             }
+            
         }
+        catch {
+            signUpErrorMessage = error.localizedDescription
+            signUpProcessing = false
+        }
+        
     }
 
 }
 
 extension SignUpView {
     class ViewModel: ObservableObject {
-        private let ref = Database.database().reference()
-        private let dbPath = "budgets"
+        let db = Firestore.firestore()
         
-        func addBudget() {
-            if let userID = Auth.auth().currentUser?.uid {
-                guard let autoId = ref.child(dbPath).child(userID).childByAutoId().key else {
-                    return
-                }
-                let budget = Budget(id: autoId, updatedAt: Date.now, ownerId: userID)
-                
-                do {
-                    let budgetAsDictionary = try budget.asDictionary()
-                    ref.child("\(dbPath)/\(userID)/\(budget.id)").setValue(budgetAsDictionary)
-                } catch  {
-                    return
-                }
-                
+        @MainActor
+        func addBudget(user: User) async {
+            do {
+                let budget = Budget(ownerIds: [user.uid])
+                try await db.collection(budget.collectionId()).addDocument(from: budget)
+            } catch {
+                return
             }
         }
     }
@@ -121,7 +114,6 @@ struct SignUpView_Previews: PreviewProvider {
 }
 
 struct SignUpCredentialFields: View {
-    
     @Binding var email: String
     @Binding var password: String
     @Binding var passwordConfirmation: String

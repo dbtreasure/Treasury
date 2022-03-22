@@ -7,7 +7,6 @@
 
 import Foundation
 import SwiftUI
-import Firebase
 import FirebaseAuth
 
 struct SignInView: View {
@@ -31,7 +30,13 @@ struct SignInView: View {
             Spacer()
             SignInCredentialFields(email: $email, password: $password)
             Button(action: {
-                signInUser(userEmail: email, userPassword: password)
+                Task {
+                    await signInUser(userEmail: email, userPassword: password)
+                }
+                withAnimation {
+                    viewRouter.changePage(.homePage)
+                }
+                
             }) {
                 Text("Log In")
                     .bold()
@@ -63,27 +68,19 @@ struct SignInView: View {
         .padding(.bottom)
     }
     
-    func signInUser(userEmail: String, userPassword: String) {
+    @MainActor
+    func signInUser(userEmail: String, userPassword: String) async {
         signInProcessing = true
-        Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
-            guard error == nil else {
-                signInProcessing = false
-                signInErrorMessage = error!.localizedDescription
-                return
-            }
-            switch authResult {
-            case .none:
-                print("DANLOG Could not sign in user.")
-                signInProcessing = false
-            case .some(_):
-                print("DANLOG User signed in")
-                signInProcessing = false
-                withAnimation {
-                    viewRouter.changePage(.homePage)
-                }
-            }
+        do {
+            try await Auth.auth().signIn(withEmail: email, password: password)
+            signInProcessing = false
+        } catch {
+            signInProcessing = false
+            signInErrorMessage = error.localizedDescription
         }
     }
+        
+    
 }
 
 struct LogoView: View {
