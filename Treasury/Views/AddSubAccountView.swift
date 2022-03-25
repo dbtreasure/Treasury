@@ -85,16 +85,16 @@ extension AddSubAccountView {
         private let dbPath = "subAccounts"
         
         func addSubAccount(title: String, budget: Int) {
-            if let userID = Auth.auth().currentUser?.uid {
-                guard let autoId = ref.child(dbPath).child(userID).childByAutoId().key else { return }
-                let subAccount = SubAccount(id: autoId, updatedAt: Date.now, budgetId: budgetId, ownerId: userID, title: title, budget: budget)
-                do {
-                    let subAccountAsDictionary = try subAccount.asDictionary()
-                    ref.child("\(dbPath)/\(userID)/\(subAccount.id)").setValue(subAccountAsDictionary)
-                } catch {
-                    
-                }
-            }
+//            if let userID = Auth.auth().currentUser?.uid {
+//                guard let autoId = ref.child(dbPath).child(userID).childByAutoId().key else { return }
+//                let subAccount = SubAccount(id: autoId, updatedAt: Date.now, budgetId: budgetId, ownerId: userID, title: title, budget: budget)
+//                do {
+//                    let subAccountAsDictionary = try subAccount.asDictionary()
+//                    ref.child("\(dbPath)/\(userID)/\(subAccount.id)").setValue(subAccountAsDictionary)
+//                } catch {
+//                    
+//                }
+//            }
         }
     }
 }

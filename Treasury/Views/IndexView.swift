@@ -9,6 +9,8 @@ import SwiftUI
 
 struct IndexView: View {
     @EnvironmentObject var viewRouter: ViewRouter
+    @EnvironmentObject var currentMonth: CurrentMonth
+    @EnvironmentObject var activeBudget: ActiveBudget
     
     var body: some View {
         switch viewRouter.currentPage {
@@ -17,7 +19,7 @@ struct IndexView: View {
         case .signInPage:
             SignInView().padding([.leading, .trailing])
         case .homePage:
-            HomeView()
+            HomeView(viewModel: .init(currentMonth: currentMonth, activeBudget: activeBudget))
         }
     }
 }

@@ -6,26 +6,107 @@
 //
 
 import SwiftUI
-import Firebase
+import FirebaseFirestore
+import FirebaseFirestoreSwift
+import FirebaseAuth
 
 struct HomeView: View {
-    @StateObject var currentMonth = CurrentMonth()
+    @ObservedObject var viewModel: ViewModel
+    @EnvironmentObject var router: ViewRouter
+    @EnvironmentObject var currentMonth: CurrentMonth
+    @EnvironmentObject var activeBudget: ActiveBudget
     
     var body: some View {
-        NavigationView {
-            YearView(viewModel: .init())
+        if let activeFiscalMonth = viewModel.activeFiscalMonth {
+            NavigationView {
+                MonthView(viewModel: .init(currentMonth: currentMonth, activeBudget: activeBudget, activeFiscalMonth: activeFiscalMonth,  router: router))
+            }
+            .environmentObject(currentMonth)
+            .environmentObject(activeBudget)
+            .preferredColorScheme(.light)
+            .accentColor(.black)
+            .navigationViewStyle(.stack)
+        } else {
+            HStack {
+                Spacer()
+                Text("Loading")
+                    .font(.largeTitle)
+                Spacer()
+            }
         }
-        .environmentObject(currentMonth)
-        .accentColor(.black)
-        .navigationViewStyle(.stack)
+        
     }
     
     
 }
 
+extension HomeView {
+    class ViewModel: ObservableObject {
+        @Published private(set) public var activeFiscalMonth: FiscalMonth?
+        
+        private var currentMonth: CurrentMonth
+        private var activeBudget: ActiveBudget
+        
+        let db = Firestore.firestore()
+        
+        init(currentMonth: CurrentMonth, activeBudget: ActiveBudget) {
+            self.currentMonth = currentMonth
+            self.activeBudget = activeBudget
+            guard activeBudget.documentId != nil else {
+                Task {
+                    await fetchBudget()
+                }
+                return
+            }
+            Task {
+                await fetchCurrentFiscalMonth()
+            }
+            
+        }
+        
+        @MainActor
+        private func fetchBudget() async {
+            print("DANLOG fetchBudget")
+            do {
+                if let userId = Auth.auth().currentUser?.uid {
+                    let budgetResult = try await db.collection("budgets").whereField("ownerIds", arrayContains: userId).limit(to: 1).getDocuments()
+                    let budgetDocumentId = budgetResult.documents.first!.documentID
+                    activeBudget.setActiveBudgetDocumentId(id: budgetDocumentId)
+                    print("DANLOG budgetId", budgetDocumentId as Any)
+                }
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+        
+        @MainActor
+        private func fetchCurrentFiscalMonth() async {
+            print("DANLOG fetchCurrentFiscalMonth")
+            do {
+                let fiscalMonthsResult = try await db.collection("fiscalMonths").whereField("budgetId", isEqualTo: activeBudget.documentId).order(by: "createdAt", descending: true).limit(to: 1).getDocuments()
+                if let fiscalMonth = fiscalMonthsResult.documents.first {
+                    let month = try fiscalMonth.data(as: FiscalMonth.self)
+                    self.activeFiscalMonth = month
+                    print("DANLOG activeFiscalMonth", fiscalMonth.documentID as Any)
+                } else {
+                    print("DANLOG creating new activeFiscalMonth")
+                    let newFiscalMonth = FiscalMonth(budgetId: activeBudget.documentId!, monthName: "currentMonth.name", monthIndex: currentMonth.index, totalExpenses: 0, transactions: [], totalBudget: 0, subAccounts: [])
+                    let savedFiscalMonthRef = try db.collection("fiscalMonths").addDocument(from: newFiscalMonth)
+                    let savedFiscalMonth = try await savedFiscalMonthRef.getDocument().data(as: FiscalMonth.self)
+                    self.activeFiscalMonth = savedFiscalMonth
+                    
+                    print("DANLOG new activeFiscalMonth", savedFiscalMonthRef.documentID as Any)
+                }
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+    }
+}
+
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
-        HomeView()
+        HomeView(viewModel: .init(currentMonth: CurrentMonth(), activeBudget: ActiveBudget()))
             .colorScheme(.light)
             .preferredColorScheme(.light)
     }

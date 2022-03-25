@@ -11,14 +11,16 @@ import Firebase
 @main
 struct TreasuryApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-    
+    @StateObject var currentMonth = CurrentMonth()
     @StateObject var viewRouter = ViewRouter()
-    
+    @StateObject var activeBudget = ActiveBudget()
     
     var body: some Scene {
         WindowGroup {
             IndexView()
+                .environmentObject(currentMonth)
                 .environmentObject(viewRouter)
+                .environmentObject(activeBudget)
         }
     }
 }
@@ -29,7 +31,6 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
       FirebaseApp.configure()
-      Database.database().isPersistenceEnabled = true
       return true
   }
 }

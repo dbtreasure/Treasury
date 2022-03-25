@@ -89,8 +89,8 @@ extension AddTransactionView {
                 guard let autoId = ref.child(dbPath).child(userID).childByAutoId().key else { return }
                 let transaction = Transaction(id: autoId, updatedAt: Date.now, budgetId: budgetId, ownerId: userID, subAccountId: subAccountId, description: description, total: total, transactionDate: date)
                 do {
-                    let transactionAsDictionary = try transaction.asDictionary()
-                    ref.child("\(dbPath)/\(userID)/\(transaction.id)").setValue(transactionAsDictionary)
+//                    let transactionAsDictionary = try transaction.asDictionary()
+//                    ref.child("\(dbPath)/\(userID)/\(transaction.id)").setValue(transactionAsDictionary)
                 } catch {
 
                 }

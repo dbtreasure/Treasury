@@ -11,7 +11,8 @@ import FirebaseDatabase
 
 struct YearView: View {
     @EnvironmentObject private var currentMonth: CurrentMonth
-    @EnvironmentObject var viewRouter: ViewRouter
+    @EnvironmentObject private var activeBudget: ActiveBudget
+    @EnvironmentObject var router: ViewRouter
     @ObservedObject var viewModel: ViewModel
     @State var signOutProcessing = false
     
@@ -22,7 +23,7 @@ struct YearView: View {
                     ForEach(viewModel.months, id: \.monthIndex) { month in
                         NavigationLink(
                             destination: MonthView(
-                                viewModel: .init(month: month, subAccounts: viewModel.subAccounts)
+                                viewModel: .init(currentMonth: currentMonth, activeBudget: activeBudget, activeFiscalMonth: month, router: router)
                             )) {
                             HStack(alignment: .center, spacing: 10) {
                                 Text(month.monthName)
@@ -118,7 +119,7 @@ struct YearView: View {
         do {
             try firebaseAuth.signOut()
             withAnimation {
-                viewRouter.changePage(.signInPage)
+                router.changePage(.signInPage)
             }
         } catch let signOutError as NSError {
           print("Error signing out: %@", signOutError)
@@ -193,6 +194,7 @@ extension YearView {
                         } else {
                             $0.append(
                                 FiscalMonth(
+                                    budgetId: "abc",
                                     monthName: monthName,
                                     monthIndex: monthIdx,
                                     totalExpenses: $1.total,
