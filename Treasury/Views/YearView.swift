@@ -98,7 +98,13 @@ struct YearView: View {
                     ProgressView()
                 } else {
                     Button() {
-                        signOutUser()
+                        Task {
+                            await signOutUser()
+                        }
+                        withAnimation {
+                            router.changePage(.signInPage)
+                        }
+                        
                     }label: {
                         HStack {
                             Text("Logout")
@@ -113,14 +119,11 @@ struct YearView: View {
         .padding([.leading, .trailing, .bottom])
     }
     
-    func signOutUser() {
+    @MainActor
+    func signOutUser() async {
         signOutProcessing = true
-        let firebaseAuth = Auth.auth()
         do {
-            try firebaseAuth.signOut()
-            withAnimation {
-                router.changePage(.signInPage)
-            }
+            try await Auth.auth().signOut()
         } catch let signOutError as NSError {
           print("Error signing out: %@", signOutError)
             signOutProcessing = false

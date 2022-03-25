@@ -103,12 +103,9 @@ struct MonthView: View {
         .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                if let subAccount = viewModel.activeFiscalMonth.subAccounts.first {
-                    NavigationLink(destination: AddSubAccountView(viewModel: .init(budgetId: subAccount.budgetId))) {
-                        Image(systemName: "folder.badge.plus")
-                    }.foregroundColor(.black)
-                }
-                
+                NavigationLink(destination: AddSubAccountView(viewModel: .init(budgetId: activeBudget.documentId!))) {
+                    Image(systemName: "folder.badge.plus")
+                }.foregroundColor(.black)
             }
             
             ToolbarItem(placement: .navigationBarLeading) {
@@ -150,13 +147,7 @@ extension MonthView {
             dateFormatter.dateFormat = "yyyy/mm/dd hh:mm:ss Z"
             dateFormatter.timeZone = .autoupdatingCurrent
             currentMonthIndex = Calendar.current.component(.month, from: currentDate)
-            
-            guard let _ = Auth.auth().currentUser else {
-                withAnimation {
-                    router.changePage(.signInPage)
-                }
-                return
-            }
+        
         }
         
         func getTransactionsForSubAccount(subAccountId: String) -> [Transaction] {
