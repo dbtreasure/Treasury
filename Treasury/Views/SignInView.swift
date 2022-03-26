@@ -18,6 +18,8 @@ struct SignInView: View {
     @State var email = ""
     @State var password = ""
     
+    let auth = FirebaseAuth.Auth.auth()
+    
     var body: some View {
         VStack(spacing: 15) {
             Spacer()
@@ -31,10 +33,13 @@ struct SignInView: View {
             SignInCredentialFields(email: $email, password: $password)
             Button(action: {
                 Task {
+                    print("DANLOG starting sign in")
                     await signInUser(userEmail: email, userPassword: password)
-                }
-                withAnimation {
-                    viewRouter.changePage(.homePage)
+                    print("DANLOG should be done")
+                    signInProcessing = false
+                    withAnimation {
+                        viewRouter.changePage(.homePage)
+                    }
                 }
                 
             }) {
@@ -72,8 +77,8 @@ struct SignInView: View {
     func signInUser(userEmail: String, userPassword: String) async {
         signInProcessing = true
         do {
-            try await Auth.auth().signIn(withEmail: email, password: password)
-            signInProcessing = false
+            print("DANLOG calling sign in")
+            try await auth.signIn(withEmail: email, password: password)
         } catch {
             signInProcessing = false
             signInErrorMessage = error.localizedDescription

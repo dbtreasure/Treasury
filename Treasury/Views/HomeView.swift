@@ -46,12 +46,14 @@ extension HomeView {
         
         private var currentMonth: CurrentMonth
         private var activeBudget: ActiveBudget
+        private var viewRouter: ViewRouter
         
         let db = Firestore.firestore()
         
-        init(currentMonth: CurrentMonth, activeBudget: ActiveBudget) {
+        init(currentMonth: CurrentMonth, activeBudget: ActiveBudget, viewRouter: ViewRouter) {
             self.currentMonth = currentMonth
             self.activeBudget = activeBudget
+            self.viewRouter = viewRouter
             guard activeBudget.documentId != nil else {
                 Task {
                     await fetchBudget()
@@ -61,7 +63,6 @@ extension HomeView {
             Task {
                 await fetchCurrentFiscalMonth()
             }
-            
         }
         
         @MainActor
@@ -70,9 +71,14 @@ extension HomeView {
             do {
                 if let userId = Auth.auth().currentUser?.uid {
                     let budgetResult = try await db.collection("budgets").whereField("ownerIds", arrayContains: userId).limit(to: 1).getDocuments()
-                    let budgetDocumentId = budgetResult.documents.first!.documentID
-                    activeBudget.setActiveBudgetDocumentId(id: budgetDocumentId)
-                    print("DANLOG budgetId", budgetDocumentId as Any)
+                    if let budgetDocument = budgetResult.documents.first {
+                        activeBudget.setActiveBudgetDocumentId(id: budgetDocument.documentID)
+                        print("DANLOG budgetId", budgetDocument.documentID as Any)
+                    }
+                } else {
+                    withAnimation {
+                        viewRouter.changePage(.signInPage)
+                    }
                 }
             } catch {
                 print(error.localizedDescription)
@@ -83,8 +89,8 @@ extension HomeView {
         private func fetchCurrentFiscalMonth() async {
             print("DANLOG fetchCurrentFiscalMonth")
             do {
-                let fiscalMonthsResult = try await db.collection("fiscalMonths").whereField("budgetId", isEqualTo: activeBudget.documentId).order(by: "createdAt", descending: true).limit(to: 1).getDocuments()
-                if let fiscalMonth = fiscalMonthsResult.documents.first {
+                let fiscalMonthsResult = try await db.collection("fiscalMonths").whereField("budgetId", isEqualTo: activeBudget.documentId).order(by: "createdAt", descending: false).getDocuments()
+                if let fiscalMonth = fiscalMonthsResult.documents.last {
                     let month = try fiscalMonth.data(as: FiscalMonth.self)
                     self.activeFiscalMonth = month
                     print("DANLOG activeFiscalMonth", fiscalMonth.documentID as Any)
@@ -105,7 +111,7 @@ extension HomeView {
 
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
-        HomeView(viewModel: .init(currentMonth: CurrentMonth(), activeBudget: ActiveBudget()))
+        HomeView(viewModel: .init(currentMonth: CurrentMonth(), activeBudget: ActiveBudget(), viewRouter: ViewRouter()))
             .colorScheme(.light)
             .preferredColorScheme(.light)
     }

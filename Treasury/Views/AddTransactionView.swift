@@ -6,9 +6,7 @@
 //
 
 import SwiftUI
-import Firebase
-import FirebaseAuth
-import FirebaseDatabase
+import FirebaseFirestore
 
 struct AddTransactionView: View {
     @ObservedObject var viewModel: ViewModel
@@ -65,35 +63,35 @@ struct AddTransactionView: View {
     }
     
     func submit() {
-        viewModel.addTransaction(description: description, total: total, date: date)
-        self.description = ""
-        self.total = 0
+        Task {
+            await viewModel.addTransaction(description: description, total: total, date: date)
+            self.description = ""
+            self.total = 0
+        }
+        
         presentationMode.wrappedValue.dismiss()
     }
 }
 
 extension AddTransactionView {
     class ViewModel: ObservableObject {
-        private var budgetId: String
-        private var subAccountId: String
-        private let ref = Database.database().reference()
-        private let dbPath = "transactions"
+        @Published private(set) public var account: SubAccount
+        let db = Firestore.firestore()
         
-        init(budgetId: String, subAccountId: String) {
-            self.budgetId = budgetId
-            self.subAccountId = subAccountId
+        init(subAccount: SubAccount) {
+            self.account = subAccount
+            
         }
         
-        func addTransaction(description: String, total: Int, date: Date) {
-            if let userID = Auth.auth().currentUser?.uid {
-                guard let autoId = ref.child(dbPath).child(userID).childByAutoId().key else { return }
-                let transaction = Transaction(id: autoId, updatedAt: Date.now, budgetId: budgetId, ownerId: userID, subAccountId: subAccountId, description: description, total: total, transactionDate: date)
-                do {
-//                    let transactionAsDictionary = try transaction.asDictionary()
-//                    ref.child("\(dbPath)/\(userID)/\(transaction.id)").setValue(transactionAsDictionary)
-                } catch {
-
-                }
+        @MainActor
+        func addTransaction(description: String, total: Int, date: Date) async {
+            do {
+                let transactionsRef = db.collection("transactions")
+                let transaction = Transaction(budgetId: account.budgetId, fiscalMonthId: account.fiscalMonthId, subAccountId: account.id!, description: description, total: total, createdAt: date)
+                try await transactionsRef.addDocument(from: transaction)
+                
+            } catch {
+                print(error.localizedDescription)
             }
         }
     }
@@ -101,6 +99,6 @@ extension AddTransactionView {
 
 struct AddTransactionView_Previews: PreviewProvider {
     static var previews: some View {
-        AddTransactionView(viewModel: .init(budgetId: "abc", subAccountId: "abc"))
+        AddTransactionView(viewModel: .init(subAccount: SubAccount(fiscalMonthId: "abc", budgetId: "123", title: "Donus", budget: 400, expenses: 0)))
     }
 }

@@ -122,6 +122,12 @@ struct MonthView: View {
                 }
             }
         }
+        .onAppear {
+            viewModel.listenForSubAccounts()
+        }
+        .onDisappear {
+            viewModel.removeSubAccountsListener()
+        }
     }
 }
 
@@ -135,34 +141,36 @@ extension MonthView {
         @EnvironmentObject var router: ViewRouter
         
         private var activeBudget: ActiveBudget
-        
-        private let currentDate = Date()
-        private var currentMonthIndex: Int
-        private let dateFormatter = DateFormatter()
         private let db = Firestore.firestore()
+        private var subAccountsListener: ListenerRegistration?
         
         init(currentMonth: CurrentMonth, activeBudget: ActiveBudget, activeFiscalMonth: FiscalMonth, router: ViewRouter) {
             self.activeFiscalMonth = activeFiscalMonth
             self.currentMonth = currentMonth
             self.activeBudget = activeBudget
-            dateFormatter.dateFormat = "yyyy/mm/dd hh:mm:ss Z"
-            dateFormatter.timeZone = .autoupdatingCurrent
-            currentMonthIndex = Calendar.current.component(.month, from: currentDate)
-            fetchSubAccounts()
         }
         
-        private func fetchSubAccounts() {
+        func listenForSubAccounts() {
+            attachSubAccountsListener()
+        }
+        
+        func removeSubAccountsListener() {
+            if let listener = self.subAccountsListener {
+                listener.remove()
+            }
+        }
+        
+        private func attachSubAccountsListener() {
             do {
-                db.collection("subAccounts").whereField("fiscalMonthId", isEqualTo: activeFiscalMonth.id).addSnapshotListener {
+                let listener = db.collection("subAccounts").whereField("fiscalMonthId", isEqualTo: activeFiscalMonth.id).addSnapshotListener {
                     (snap, err) in
                     
-                    guard let docs = snap else { return }
+                    guard let docs = snap?.documents else { return }
                     
-                    docs.documentChanges.forEach { (doc) in
-                        let subAccount = try! doc.document.data(as: SubAccount.self)
-                        self.subAccounts.append(subAccount)
-                    }
+                    let subAccounts = docs.map { return try! $0.data(as: SubAccount.self) }
+                    self.subAccounts = subAccounts
                 }
+                self.subAccountsListener = listener
             } catch {
                 print(error.localizedDescription)
             }

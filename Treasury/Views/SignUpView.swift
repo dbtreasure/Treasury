@@ -99,7 +99,7 @@ extension SignUpView {
         func addBudget(user: User) async {
             do {
                 let budget = Budget(ownerIds: [user.uid])
-                try await db.collection(budget.collectionId()).addDocument(from: budget)
+                try await db.collection("budgets").addDocument(from: budget)
             } catch {
                 return
             }

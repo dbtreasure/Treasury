@@ -19,7 +19,7 @@ struct IndexView: View {
         case .signInPage:
             SignInView().padding([.leading, .trailing])
         case .homePage:
-            HomeView(viewModel: .init(currentMonth: currentMonth, activeBudget: activeBudget))
+            HomeView(viewModel: .init(currentMonth: currentMonth, activeBudget: activeBudget, viewRouter: viewRouter))
         }
     }
 }

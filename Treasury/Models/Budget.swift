@@ -17,9 +17,3 @@ struct Budget: Identifiable, Codable {
         case ownerIds
     }
 }
-
-extension Budget {
-    func collectionId() -> String {
-        return "budgets"
-    }
-}

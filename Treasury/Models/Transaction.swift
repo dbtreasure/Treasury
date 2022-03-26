@@ -6,15 +6,24 @@
 //
 
 import Foundation
-import FirebaseDatabaseSwift
+import FirebaseFirestoreSwift
 
 struct Transaction: Identifiable, Codable {
-    var id: String
-    @ServerTimestamp var updatedAt = Date()
+    @DocumentID var id: String?
     var budgetId: String
-    var ownerId: String
+    var fiscalMonthId: String
     var subAccountId: String
     var description: String
     var total: Int
-    @ServerTimestamp var transactionDate = Date()
+    var createdAt: Date
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case budgetId
+        case fiscalMonthId
+        case subAccountId
+        case description
+        case total
+        case createdAt
+    }
 }

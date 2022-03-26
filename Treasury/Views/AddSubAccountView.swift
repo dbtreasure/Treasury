@@ -72,8 +72,10 @@ struct AddSubAccountView: View {
         Task {
             await viewModel.addSubAccount(title: title, budget: total)
         }
+        withAnimation {
+            presentationMode.wrappedValue.dismiss()
+        }
         
-        presentationMode.wrappedValue.dismiss()
     }
 }
 
