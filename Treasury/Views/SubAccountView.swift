@@ -16,7 +16,7 @@ struct SubAccountView: View {
             Spacer()
             ScrollView {
                 VStack(alignment: .center, spacing: 10) {
-                    ForEach(viewModel.getTransactionsForSubAccount(subAccountId: viewModel.account.id), id: \.id) { transaction in
+                    ForEach(viewModel.transactions, id: \.id) { transaction in
                         HStack(alignment: .center, spacing: 10) {
                             Text(transaction.description)
                                 .font(.title3)
@@ -53,9 +53,9 @@ struct SubAccountView: View {
                         .font(.title2)
                         .fontWeight(.semibold)
                     Spacer()
-                    (viewModel.getTransactionSumForSubAccount(subAccountId: viewModel.account.id) <= 0 ?
-                     Text("$\(viewModel.getTransactionSumForSubAccount(subAccountId: viewModel.account.id))") :
-                        Text("-$\(viewModel.getTransactionSumForSubAccount(subAccountId: viewModel.account.id))").foregroundColor(.red))
+                    (viewModel.account.expenses <= 0 ?
+                     Text("$\(viewModel.account.expenses)") :
+                        Text("-$\(viewModel.account.expenses)").foregroundColor(.red))
                         .font(.title2)
                         .fontWeight(.semibold)
                 }
@@ -69,12 +69,12 @@ struct SubAccountView: View {
                         .fontWeight(.semibold)
                     Spacer()
                     (
-                        viewModel.getRemainingFundsForSubAccount(subAccountId: viewModel.account.id, budget: viewModel.account.budget) < 0 ?
-                        Text("$\(viewModel.getRemainingFundsForSubAccount(subAccountId: viewModel.account.id, budget: viewModel.account.budget))")
+                        viewModel.account.bottomLine() < 0 ?
+                        Text("$\(viewModel.account.bottomLine())")
                             .font(.title2)
                             .fontWeight(.semibold)
                             .foregroundColor(.red) :
-                            Text("$\(viewModel.getRemainingFundsForSubAccount(subAccountId: viewModel.account.id, budget: viewModel.account.budget))")
+                            Text("$\(viewModel.account.bottomLine())")
                             .font(.title2)
                             .fontWeight(.semibold)
                     )
@@ -133,25 +133,12 @@ extension SubAccountView {
                 }
             }
         }
-        
-        func getTransactionsForSubAccount(subAccountId: String) -> [Transaction] {
-            return self.transactions.filter({$0.subAccountId == subAccountId})
-        }
-        
-        func getTransactionSumForSubAccount(subAccountId: String) -> Int {
-            let transactions = getTransactionsForSubAccount(subAccountId: subAccountId)
-            return transactions.reduce(0, {$0 + $1.total})
-        }
-        
-        func getRemainingFundsForSubAccount(subAccountId: String, budget: Int) -> Int {
-            return budget - getTransactionSumForSubAccount(subAccountId: subAccountId)
-        }
     }
 }
 
 struct SubAccountView_Previews: PreviewProvider {
     
     static var previews: some View {
-        SubAccountView(viewModel: .init(subAccount: SubAccount(id: "abc", budgetId: "123", ownerId: "acd", title: "Donus", budget: 400)))
+        SubAccountView(viewModel: .init(subAccount: SubAccount(fiscalMonthId: "abc", budgetId: "123", title: "Donus", budget: 400, expenses: 0)))
     }
 }

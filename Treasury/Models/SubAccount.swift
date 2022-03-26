@@ -6,13 +6,26 @@
 //
 
 import Foundation
-import FirebaseDatabaseSwift
+import FirebaseFirestoreSwift
 
 struct SubAccount: Identifiable, Codable {
-    var id: String
-    @ServerTimestamp var updatedAt = Date()
+    @DocumentID var id: String?
+    var fiscalMonthId: String
     var budgetId: String
-    var ownerId: String
     var title: String
     var budget: Int
+    var expenses: Int
+    
+    func bottomLine() -> Int {
+        return self.budget - expenses
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case fiscalMonthId
+        case expenses
+        case budgetId
+        case title
+        case budget
+    }
 }

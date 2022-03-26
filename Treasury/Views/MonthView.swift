@@ -19,7 +19,7 @@ struct MonthView: View {
         VStack {
             ScrollView {
                 VStack(alignment: .center, spacing: 10) {
-                    ForEach(viewModel.activeFiscalMonth.subAccounts, id: \.id) { account in
+                    ForEach(viewModel.subAccounts, id: \.id) { account in
                         NavigationLink(
                             destination: SubAccountView(
                                 viewModel: .init(subAccount: account)
@@ -30,11 +30,11 @@ struct MonthView: View {
                                     .foregroundStyle(.black)
                                 Spacer()
                                 (
-                                    viewModel.getRemainingFundsForSubAccount(subAccountId: account.id, budget: account.budget) < 0 ?
-                                    Text("$\(viewModel.getRemainingFundsForSubAccount(subAccountId: account.id, budget: account.budget))")
+                                    account.bottomLine() < 0 ?
+                                    Text("$\(account.bottomLine())")
                                         .fontWeight(.semibold)
                                         .foregroundColor(.red) :
-                                    Text("$\(viewModel.getRemainingFundsForSubAccount(subAccountId: account.id, budget: account.budget))")
+                                    Text("$\(account.bottomLine())")
                                         .fontWeight(.semibold)
                                         .foregroundColor(.black)
                                 )
@@ -59,7 +59,7 @@ struct MonthView: View {
                         .font(.title2)
                         .fontWeight(.semibold)
                     Spacer()
-                    Text("$\(viewModel.getBudgetForAllSubAccounts())")
+                    Text("$\(viewModel.activeFiscalMonth.totalBudget)")
                         .font(.title2)
                         .fontWeight(.semibold)
                 }
@@ -70,9 +70,9 @@ struct MonthView: View {
                         .font(.title2)
                         .fontWeight(.semibold)
                     Spacer()
-                    (viewModel.getTransactionsSumForBudget() <= 0 ?
-                     Text("$\(viewModel.getTransactionsSumForBudget())") :
-                        Text("-$\(viewModel.getTransactionsSumForBudget())").foregroundColor(.red))
+                    (viewModel.activeFiscalMonth.totalExpenses <= 0 ?
+                     Text("$\(viewModel.activeFiscalMonth.totalExpenses)") :
+                        Text("-$\(viewModel.activeFiscalMonth.totalExpenses)").foregroundColor(.red))
                         .font(.title2)
                         .fontWeight(.semibold)
                 }
@@ -86,12 +86,12 @@ struct MonthView: View {
                         .fontWeight(.semibold)
                     Spacer()
                     (
-                        viewModel.getRemainingFundsForBudget(viewModel.getBudgetForAllSubAccounts()) < 0 ?
-                        Text("$\(viewModel.getRemainingFundsForBudget(viewModel.getBudgetForAllSubAccounts()))")
+                        viewModel.activeFiscalMonth.bottomLine() < 0 ?
+                        Text("$\(viewModel.activeFiscalMonth.bottomLine())")
                             .font(.title2)
                             .fontWeight(.semibold)
                             .foregroundColor(.red) :
-                            Text("$\(viewModel.getRemainingFundsForBudget(viewModel.getBudgetForAllSubAccounts()))")
+                            Text("$\(viewModel.activeFiscalMonth.bottomLine())")
                             .font(.title2)
                             .fontWeight(.semibold)
                     )
@@ -103,14 +103,14 @@ struct MonthView: View {
         .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                NavigationLink(destination: AddSubAccountView(viewModel: .init(budgetId: activeBudget.documentId!))) {
+                NavigationLink(destination: AddSubAccountView(viewModel: .init(budgetId: activeBudget.documentId!, activeFiscalMonth: viewModel.activeFiscalMonth))) {
                     Image(systemName: "folder.badge.plus")
                 }.foregroundColor(.black)
             }
             
             ToolbarItem(placement: .navigationBarLeading) {
                 if let year = currentMonth.year {
-                    NavigationLink(destination: YearView(viewModel: .init())) {
+                    NavigationLink(destination: YearView(viewModel: .init(activeBudget: activeBudget, currentMonth: currentMonth))) {
                         
                         HStack(alignment: .center) {
                             Image(systemName: "arrowshape.turn.up.backward")
@@ -130,6 +130,7 @@ extension MonthView {
     class ViewModel: ObservableObject {
         @Published var activeFiscalMonth: FiscalMonth
         @Published var currentMonth: CurrentMonth?
+        @Published var subAccounts = [SubAccount]()
     
         @EnvironmentObject var router: ViewRouter
         
@@ -147,38 +148,24 @@ extension MonthView {
             dateFormatter.dateFormat = "yyyy/mm/dd hh:mm:ss Z"
             dateFormatter.timeZone = .autoupdatingCurrent
             currentMonthIndex = Calendar.current.component(.month, from: currentDate)
-        
+            fetchSubAccounts()
         }
         
-        func getTransactionsForSubAccount(subAccountId: String) -> [Transaction] {
-//            return self.transactions.filter({$0.subAccountId == subAccountId})
-            return []
-        }
-        
-        func getBudgetForAllSubAccounts() -> Int {
-//            return self.subAccounts.reduce(0, {$0 + $1.budget})
-            return 0
-        }
-        
-        func getTransactionSumForSubAccount(subAccountId: String) -> Int {
-//            let transactions = getTransactionsForSubAccount(subAccountId: subAccountId)
-//            return transactions.reduce(0, {$0 + $1.total})
-            return 0
-        }
-        
-        func getRemainingFundsForSubAccount(subAccountId: String, budget: Int) -> Int {
-//            return budget - getTransactionSumForSubAccount(subAccountId: subAccountId)
-            return 0
-        }
-        
-        func getTransactionsSumForBudget() -> Int {
-//            return self.transactions.reduce(0, {$0 + $1.total})
-            return 0
-        }
-        
-        func getRemainingFundsForBudget(_ budgetForAllSubAccounts: Int) -> Int {
-//            return budgetForAllSubAccounts - getTransactionsSumForBudget()
-            return 0
+        private func fetchSubAccounts() {
+            do {
+                db.collection("subAccounts").whereField("fiscalMonthId", isEqualTo: activeFiscalMonth.id).addSnapshotListener {
+                    (snap, err) in
+                    
+                    guard let docs = snap else { return }
+                    
+                    docs.documentChanges.forEach { (doc) in
+                        let subAccount = try! doc.document.data(as: SubAccount.self)
+                        self.subAccounts.append(subAccount)
+                    }
+                }
+            } catch {
+                print(error.localizedDescription)
+            }
         }
         
     }
@@ -186,6 +173,6 @@ extension MonthView {
 
 struct MonthView_Previews: PreviewProvider {
     static var previews: some View {
-        MonthView(viewModel: .init(currentMonth: CurrentMonth(), activeBudget: ActiveBudget(), activeFiscalMonth: FiscalMonth(budgetId: "abc", monthName: "March", monthIndex: 3, totalExpenses: 200, transactions: [], totalBudget: 400, subAccounts: []), router: ViewRouter()))
+        MonthView(viewModel: .init(currentMonth: CurrentMonth(), activeBudget: ActiveBudget(), activeFiscalMonth: FiscalMonth(budgetId: "abc", monthName: "March", monthIndex: 3, totalExpenses: 200, totalBudget: 400), router: ViewRouter()))
     }
 }

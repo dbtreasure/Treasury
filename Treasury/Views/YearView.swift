@@ -7,7 +7,7 @@
 
 import SwiftUI
 import FirebaseAuth
-import FirebaseDatabase
+import FirebaseFirestore
 
 struct YearView: View {
     @EnvironmentObject private var currentMonth: CurrentMonth
@@ -20,7 +20,7 @@ struct YearView: View {
         VStack{
             ScrollView {
                 VStack(alignment: .center, spacing: 10) {
-                    ForEach(viewModel.months, id: \.monthIndex) { month in
+                    ForEach(viewModel.fiscalMonths, id: \.id) { month in
                         NavigationLink(
                             destination: MonthView(
                                 viewModel: .init(currentMonth: currentMonth, activeBudget: activeBudget, activeFiscalMonth: month, router: router)
@@ -52,7 +52,7 @@ struct YearView: View {
                         .font(.title2)
                         .fontWeight(.semibold)
                     Spacer()
-                    Text("$\(viewModel.getBudgetForAllSubAccounts()*viewModel.months.count)")
+                    Text("$\(viewModel.getBudgetForAllSubAccounts()*viewModel.fiscalMonths.count)")
                         .font(.title2)
                         .fontWeight(.semibold)
                 }
@@ -134,102 +134,57 @@ struct YearView: View {
 
 extension YearView {
     class ViewModel: ObservableObject {
-        @Published var transactions = [Transaction]()
-        @Published var subAccounts = [SubAccount]()
-        @Published var months = [FiscalMonth]()
+        @Published var fiscalMonths = [FiscalMonth]()
+        private var activeBudget: ActiveBudget
+        private var currentMonth: CurrentMonth
         
-        private let ref = Database.database().reference()
-        private let subAccountDbPath = "subAccounts"
-        private let transactionsDbPath = "transactions"
-        private let currentDate = Date()
-        private var currentYearIndex: Int
-        private let dateFormatter = DateFormatter()
-        let nameFormatter = DateFormatter()
+        let db = Firestore.firestore()
         
-        
-        init() {
-            nameFormatter.timeZone = .autoupdatingCurrent
-            nameFormatter.dateFormat = "MMMM" // format January, February, March, ...
-            
-            dateFormatter.dateFormat = "yyyy/mm/dd hh:mm:ss Z"
-            dateFormatter.timeZone = .autoupdatingCurrent
-            currentYearIndex = Calendar.current.component(.year, from: currentDate)
-            fetchTransactions()
-            fetchSubAccounts()
+        init(activeBudget: ActiveBudget, currentMonth: CurrentMonth) {
+            self.activeBudget = activeBudget
+            self.currentMonth = currentMonth
+            fetchFiscalMonths()
         }
         
-        private func fetchSubAccounts() {
-            if let userID = Auth.auth().currentUser?.uid {
-                ref.child(subAccountDbPath).child(userID).observe(.value) { snapshot in
-                    guard let children = snapshot.children.allObjects as? [DataSnapshot] else { return }
+        private func fetchFiscalMonths() {
+            do {
+                db.collection("fiscalMonths").whereField("budgetId", isEqualTo: activeBudget.documentId).order(by: "createdAt", descending: false).addSnapshotListener {
+                    (snap, err) in
                     
-                    self.subAccounts = children.compactMap { snapshot in
-                        return try? snapshot.data(as: SubAccount.self)
+                    guard let docs = snap else { return }
+                    
+                    docs.documentChanges.forEach { (doc) in
+                        let fiscalMonth = try? doc.document.data(as: FiscalMonth.self)
+                        if let month = fiscalMonth {
+                            let yearOfFiscalMonth = Calendar.current.component(.year, from: Date(timeIntervalSince1970: month.createdAt))
+                            if yearOfFiscalMonth == self.currentMonth.year {
+                                self.fiscalMonths.append(month)
+                            }
+                        }   
                     }
                 }
-            }
-        }
-        
-        private func fetchTransactions() {
-            if let userID = Auth.auth().currentUser?.uid {
-                ref.child(transactionsDbPath).child(userID).observe(.value) { snapshot in
-                    guard let children = snapshot.children.allObjects as? [DataSnapshot] else { return }
-                    
-                    self.transactions = children.compactMap { snapshot in
-                        return try? snapshot.data(as: Transaction.self)
-                    }
-                    .filter({
-                        if let date = $0.transactionDate, Calendar.current.component(.year, from: date) == self.currentYearIndex {
-                            return true
-                        } else {
-                            return false
-                        }
-                    })
-                    .sorted(by: {
-                        $0.transactionDate!.compare($1.transactionDate!) == .orderedAscending
-                    })
-                    self.months = self.transactions.reduce(into: [FiscalMonth]()) {
-                        let monthIdx = Calendar.current.component(.month, from: $1.transactionDate!)
-                        let monthName = self.nameFormatter.string(from: $1.transactionDate!)
-                        if let matchIdx = $0.firstIndex(where: {$0.monthIndex == monthIdx}) {
-                            $0[matchIdx].transactions.append($1)
-                            $0[matchIdx].totalExpenses += $1.total
-                        } else {
-                            $0.append(
-                                FiscalMonth(
-                                    budgetId: "abc",
-                                    monthName: monthName,
-                                    monthIndex: monthIdx,
-                                    totalExpenses: $1.total,
-                                    transactions: [$1],
-                                    totalBudget: self.getBudgetForAllSubAccounts(),
-                                    subAccounts: []
-                                )
-                            )
-                        }
-                    }
-                    
-                }
+            } catch {
+                print(error.localizedDescription)
             }
         }
         
         func getBudgetForAllSubAccounts() -> Int {
-            return self.subAccounts.reduce(0, {$0 + $1.budget})
+            return 0
         }
         
         func getTransactionsSumForBudget() -> Int {
-            return self.transactions.reduce(0, {$0 + $1.total})
+            return 0
         }
         
         func getRemainingFundsForBudget(_ budgetForAllSubAccounts: Int) -> Int {
-            return (budgetForAllSubAccounts * self.months.count) - getTransactionsSumForBudget()
+            return 0
         }
     }
 }
 
 struct YearView_Previews: PreviewProvider {
     static var previews: some View {
-        YearView(viewModel: .init())
+        YearView(viewModel: .init(activeBudget: ActiveBudget(), currentMonth: CurrentMonth()))
     }
 }
 

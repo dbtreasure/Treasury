@@ -90,11 +90,10 @@ extension HomeView {
                     print("DANLOG activeFiscalMonth", fiscalMonth.documentID as Any)
                 } else {
                     print("DANLOG creating new activeFiscalMonth")
-                    let newFiscalMonth = FiscalMonth(budgetId: activeBudget.documentId!, monthName: "currentMonth.name", monthIndex: currentMonth.index, totalExpenses: 0, transactions: [], totalBudget: 0, subAccounts: [])
+                    let newFiscalMonth = FiscalMonth(budgetId: activeBudget.documentId!, monthName: currentMonth.name, monthIndex: currentMonth.index, totalExpenses: 0, totalBudget: 0)
                     let savedFiscalMonthRef = try db.collection("fiscalMonths").addDocument(from: newFiscalMonth)
                     let savedFiscalMonth = try await savedFiscalMonthRef.getDocument().data(as: FiscalMonth.self)
                     self.activeFiscalMonth = savedFiscalMonth
-                    
                     print("DANLOG new activeFiscalMonth", savedFiscalMonthRef.documentID as Any)
                 }
             } catch {

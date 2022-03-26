@@ -6,14 +6,15 @@
 //
 
 import SwiftUI
-import Firebase
 import FirebaseAuth
-import FirebaseDatabase
+import FirebaseFirestore
+import FirebaseFirestoreSwift
 
 struct AddSubAccountView: View {
     @State private var title: String = ""
     @State private var total: Int = 0
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    
     @ObservedObject var viewModel: ViewModel
     
     var body: some View {
@@ -68,7 +69,10 @@ struct AddSubAccountView: View {
     }
     
     func submitSubAccount() {
-        viewModel.addSubAccount(title: title, budget: total)
+        Task {
+            await viewModel.addSubAccount(title: title, budget: total)
+        }
+        
         presentationMode.wrappedValue.dismiss()
     }
 }
@@ -76,31 +80,31 @@ struct AddSubAccountView: View {
 extension AddSubAccountView {
     class ViewModel: ObservableObject {
         private var budgetId: String
+        private var activeFiscalMonth: FiscalMonth
+        let db = Firestore.firestore()
         
-        init(budgetId: String) {
+        init(budgetId: String, activeFiscalMonth: FiscalMonth) {
+            self.activeFiscalMonth = activeFiscalMonth
             self.budgetId = budgetId
         }
-        
-        private let ref = Database.database().reference()
-        private let dbPath = "subAccounts"
-        
-        func addSubAccount(title: String, budget: Int) {
-//            if let userID = Auth.auth().currentUser?.uid {
-//                guard let autoId = ref.child(dbPath).child(userID).childByAutoId().key else { return }
-//                let subAccount = SubAccount(id: autoId, updatedAt: Date.now, budgetId: budgetId, ownerId: userID, title: title, budget: budget)
-//                do {
-//                    let subAccountAsDictionary = try subAccount.asDictionary()
-//                    ref.child("\(dbPath)/\(userID)/\(subAccount.id)").setValue(subAccountAsDictionary)
-//                } catch {
-//                    
-//                }
-//            }
+
+        @MainActor
+        func addSubAccount(title: String, budget: Int) async {
+            do {
+                if let documentId = self.activeFiscalMonth.id {
+                    let subAccountsRef = db.collection("subAccounts")
+                    let subAccount = SubAccount(fiscalMonthId: documentId, budgetId: self.budgetId, title: title, budget: budget, expenses: 0)
+                    try await subAccountsRef.addDocument(from: subAccount)
+                }
+            } catch {
+                print(error.localizedDescription)
+            }
         }
     }
 }
 
 struct AddSubAccountView_Previews: PreviewProvider {
     static var previews: some View {
-        AddSubAccountView(viewModel: .init(budgetId: "abc"))
+        AddSubAccountView(viewModel: .init(budgetId: "abc", activeFiscalMonth: FiscalMonth(budgetId: "abc", monthName: "March", monthIndex: 3, totalExpenses: 200, totalBudget: 400)))
     }
 }

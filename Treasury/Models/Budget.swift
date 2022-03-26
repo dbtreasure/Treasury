@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseFirestoreSwift
 
-struct Budget: Codable {
+struct Budget: Identifiable, Codable {
     @DocumentID var id: String?
     var ownerIds: [String]
     
