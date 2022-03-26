@@ -44,52 +44,55 @@ struct YearView: View {
                     }
                 }
             }
-            VStack(alignment: .center, spacing: 6) {
-                HStack(
-                    alignment: .center, spacing: 10
-                ) {
-                    Text("Total budget")
-                        .font(.title2)
-                        .fontWeight(.semibold)
-                    Spacer()
-                    Text("$\(viewModel.getBudgetForAllSubAccounts()*viewModel.fiscalMonths.count)")
-                        .font(.title2)
-                        .fontWeight(.semibold)
-                }
-                HStack(
-                    alignment: .center, spacing: 10
-                ) {
-                    Text("Total expenses")
-                        .font(.title2)
-                        .fontWeight(.semibold)
-                    Spacer()
-                    (viewModel.getTransactionsSumForBudget() <= 0 ?
-                     Text("$\(viewModel.getTransactionsSumForBudget())") :
-                        Text("-$\(viewModel.getTransactionsSumForBudget())").foregroundColor(.red))
-                        .font(.title2)
-                        .fontWeight(.semibold)
-                }
-                Divider()
-                    .background(.black)
-                HStack(
-                    alignment: .center, spacing: 10
-                ) {
-                    Text("Remaining")
-                        .font(.title2)
-                        .fontWeight(.semibold)
-                    Spacer()
-                    (
-                        viewModel.getRemainingFundsForBudget(viewModel.getBudgetForAllSubAccounts()) < 0 ?
-                        Text("$\(viewModel.getRemainingFundsForBudget(viewModel.getBudgetForAllSubAccounts()))")
+            if let totalBudget = viewModel.yearlyBudget, let totalExpenses = viewModel.yearlyExpenses, let bottomLine = viewModel.yearlyBottomLine {
+                VStack(alignment: .center, spacing: 6) {
+                    HStack(
+                        alignment: .center, spacing: 10
+                    ) {
+                        Text("Total budget")
                             .font(.title2)
                             .fontWeight(.semibold)
-                            .foregroundColor(.red) :
-                            Text("$\(viewModel.getRemainingFundsForBudget(viewModel.getBudgetForAllSubAccounts()))")
+                        Spacer()
+                        Text("$\(totalBudget)")
                             .font(.title2)
                             .fontWeight(.semibold)
-                    )
+                    }
+                    HStack(
+                        alignment: .center, spacing: 10
+                    ) {
+                        Text("Total expenses")
+                            .font(.title2)
+                            .fontWeight(.semibold)
+                        Spacer()
+                        (totalExpenses <= 0 ?
+                         Text("$\(totalExpenses)") :
+                            Text("-$\(totalExpenses)").foregroundColor(.red))
+                            .font(.title2)
+                            .fontWeight(.semibold)
+                    }
+                    Divider()
+                        .background(.black)
+                    HStack(
+                        alignment: .center, spacing: 10
+                    ) {
+                        Text("Remaining")
+                            .font(.title2)
+                            .fontWeight(.semibold)
+                        Spacer()
+                        (
+                            bottomLine < 0 ?
+                            Text("$\(bottomLine)")
+                                .font(.title2)
+                                .fontWeight(.semibold)
+                                .foregroundColor(.red) :
+                                Text("$\(bottomLine)")
+                                .font(.title2)
+                                .fontWeight(.semibold)
+                        )
+                    }
                 }
             }
+            
         }
         .navigationBarBackButtonHidden(true)
         .toolbar {
@@ -137,6 +140,9 @@ extension YearView {
         @Published var fiscalMonths = [FiscalMonth]()
         private var activeBudget: ActiveBudget
         private var currentMonth: CurrentMonth
+        @Published private(set) public var yearlyExpenses: Int?
+        @Published private(set) public var yearlyBudget: Int?
+        @Published private(set) public var yearlyBottomLine: Int?
         
         let db = Firestore.firestore()
         
@@ -151,33 +157,26 @@ extension YearView {
                 db.collection("fiscalMonths").whereField("budgetId", isEqualTo: activeBudget.documentId).order(by: "createdAt", descending: false).addSnapshotListener {
                     (snap, err) in
                     
-                    guard let docs = snap else { return }
+                    guard let docs = snap?.documents else { return }
                     
-                    docs.documentChanges.forEach { (doc) in
-                        let fiscalMonth = try? doc.document.data(as: FiscalMonth.self)
-                        if let month = fiscalMonth {
-                            let yearOfFiscalMonth = Calendar.current.component(.year, from: Date(timeIntervalSince1970: month.createdAt))
-                            if yearOfFiscalMonth == self.currentMonth.year {
-                                self.fiscalMonths.append(month)
-                            }
-                        }   
+                    let fiscalMonths = docs.map { return try! $0.data(as: FiscalMonth.self) }
+                    self.fiscalMonths = fiscalMonths.filter {
+                        let yearOfFiscalMonth = Calendar.current.component(.year, from: Date(timeIntervalSince1970: $0.createdAt))
+                        return yearOfFiscalMonth == self.currentMonth.year
                     }
+                    self.calculateYearlyTotal()
                 }
             } catch {
                 print(error.localizedDescription)
             }
         }
         
-        func getBudgetForAllSubAccounts() -> Int {
-            return 0
-        }
-        
-        func getTransactionsSumForBudget() -> Int {
-            return 0
-        }
-        
-        func getRemainingFundsForBudget(_ budgetForAllSubAccounts: Int) -> Int {
-            return 0
+        private func calculateYearlyTotal() {
+            let yearlyBudget = self.fiscalMonths.reduce(0) {$0 + $1.totalBudget}
+            self.yearlyBudget = yearlyBudget
+            let yearlyExpenses = self.fiscalMonths.reduce(0) {$0 + $1.totalExpenses}
+            self.yearlyExpenses = yearlyExpenses
+            self.yearlyBottomLine = yearlyBudget - yearlyExpenses
         }
     }
 }

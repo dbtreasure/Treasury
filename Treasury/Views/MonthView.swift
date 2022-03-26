@@ -122,9 +122,6 @@ struct MonthView: View {
                 }
             }
         }
-        .onAppear {
-            viewModel.listenForSubAccounts()
-        }
         .onDisappear {
             viewModel.removeSubAccountsListener()
         }
@@ -148,6 +145,7 @@ extension MonthView {
             self.activeFiscalMonth = activeFiscalMonth
             self.currentMonth = currentMonth
             self.activeBudget = activeBudget
+            listenForSubAccounts()
         }
         
         func listenForSubAccounts() {
@@ -168,10 +166,48 @@ extension MonthView {
                     guard let docs = snap?.documents else { return }
                     
                     let subAccounts = docs.map { return try! $0.data(as: SubAccount.self) }
+                    let sumOfSubAccountExpenses = subAccounts.reduce(0) {$0 + $1.expenses}
+                    let sumOfSubAccountBudgets = subAccounts.reduce(0) {$0 + $1.budget}
                     self.subAccounts = subAccounts
+                    let activeFiscalMonthTotalExpenses = self.activeFiscalMonth.totalExpenses
+                    if self.activeFiscalMonth.totalExpenses != sumOfSubAccountExpenses {
+                        self.activeFiscalMonth.totalExpenses = sumOfSubAccountExpenses
+                        print("DANLONG updating fiscal month expenses total")
+                        Task {
+                            await self.updateFiscalMonthExpenses(fiscalMonth: self.activeFiscalMonth, expenses: sumOfSubAccountExpenses)
+                        }
+                    }
+                    let activeFiscalMonthTotalBudget = self.activeFiscalMonth.totalBudget
+                    if self.activeFiscalMonth.totalBudget != sumOfSubAccountBudgets {
+                        self.activeFiscalMonth.totalBudget = sumOfSubAccountBudgets
+                        print("DANLONG updating fiscal month expenses total")
+                        Task {
+                            await self.updateFiscalMonthBudget(fiscalMonth: self.activeFiscalMonth, budget: sumOfSubAccountBudgets)
+                        }
+                    }
                 }
                 self.subAccountsListener = listener
             } catch {
+                print(error.localizedDescription)
+            }
+        }
+        
+        @MainActor
+        private func updateFiscalMonthExpenses(fiscalMonth: FiscalMonth, expenses: Int) async {
+            do {
+                let fiscalMonthRef = db.collection("fiscalMonths").document(self.activeFiscalMonth.id!)
+                try await fiscalMonthRef.updateData(["totalExpenses": expenses])
+            } catch  {
+                print(error.localizedDescription)
+            }
+        }
+        
+        @MainActor
+        private func updateFiscalMonthBudget(fiscalMonth: FiscalMonth, budget: Int) async {
+            do {
+                let fiscalMonthRef = db.collection("fiscalMonths").document(self.activeFiscalMonth.id!)
+                try await fiscalMonthRef.updateData(["totalBudget": budget])
+            } catch  {
                 print(error.localizedDescription)
             }
         }

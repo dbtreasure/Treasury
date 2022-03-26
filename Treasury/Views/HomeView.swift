@@ -51,6 +51,7 @@ extension HomeView {
         let db = Firestore.firestore()
         
         init(currentMonth: CurrentMonth, activeBudget: ActiveBudget, viewRouter: ViewRouter) {
+            print("DANLOG init homeview>view model")
             self.currentMonth = currentMonth
             self.activeBudget = activeBudget
             self.viewRouter = viewRouter
@@ -76,6 +77,7 @@ extension HomeView {
                         print("DANLOG budgetId", budgetDocument.documentID as Any)
                     }
                 } else {
+                    print("DANLOG bounced out with no auth")
                     withAnimation {
                         viewRouter.changePage(.signInPage)
                     }

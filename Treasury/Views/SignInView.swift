@@ -41,7 +41,6 @@ struct SignInView: View {
                         viewRouter.changePage(.homePage)
                     }
                 }
-                
             }) {
                 Text("Log In")
                     .bold()

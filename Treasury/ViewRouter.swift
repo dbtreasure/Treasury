@@ -9,7 +9,7 @@ import SwiftUI
 import FirebaseAuth
 
 class ViewRouter: ObservableObject {
-    @Published var currentPage: Page = .homePage
+    @Published private(set) public var currentPage: Page = .homePage
     
     func changePage(_ page: Page) -> Void {
         self.currentPage = page
