@@ -118,7 +118,7 @@ struct YearView: View {
                 }
             }
         }
-        .navigationBarTitle(String(currentMonth.year))
+        .navigationBarTitle(String(Calendar.current.component(.year, from: Date())))
         .padding([.leading, .trailing, .bottom])
     }
     
@@ -162,7 +162,7 @@ extension YearView {
                     let fiscalMonths = docs.map { return try! $0.data(as: FiscalMonth.self) }
                     self.fiscalMonths = fiscalMonths.filter {
                         let yearOfFiscalMonth = Calendar.current.component(.year, from: Date(timeIntervalSince1970: $0.createdAt))
-                        return yearOfFiscalMonth == self.currentMonth.year
+                        return yearOfFiscalMonth == Calendar.current.component(.year, from: Date())
                     }
                     self.calculateYearlyTotal()
                 }

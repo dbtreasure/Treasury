@@ -68,8 +68,10 @@ struct AddTransactionView: View {
             self.description = ""
             self.total = 0
         }
+        withAnimation {
+            presentationMode.wrappedValue.dismiss()
+        }
         
-        presentationMode.wrappedValue.dismiss()
     }
 }
 

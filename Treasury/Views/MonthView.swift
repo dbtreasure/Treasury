@@ -109,18 +109,21 @@ struct MonthView: View {
             }
             
             ToolbarItem(placement: .navigationBarLeading) {
-                if let year = currentMonth.year {
-                    NavigationLink(destination: YearView(viewModel: .init(activeBudget: activeBudget, currentMonth: currentMonth))) {
-                        
-                        HStack(alignment: .center) {
-                            Image(systemName: "arrowshape.turn.up.backward")
-                                
-                            Text(String(year))
-                                .bold()
-                        }
+                
+                NavigationLink(destination: YearView(viewModel: .init(activeBudget: activeBudget, currentMonth: currentMonth))) {
+                    
+                    HStack(alignment: .center) {
+                        Image(systemName: "arrowshape.turn.up.backward")
+                            
+                        Text(String(Calendar.current.component(.year, from: Date())))
+                            .bold()
                     }
                 }
+            
             }
+        }
+        .onAppear {
+            viewModel.attachSubAccountsListener()
         }
         .onDisappear {
             viewModel.removeSubAccountsListener()
@@ -145,11 +148,6 @@ extension MonthView {
             self.activeFiscalMonth = activeFiscalMonth
             self.currentMonth = currentMonth
             self.activeBudget = activeBudget
-            listenForSubAccounts()
-        }
-        
-        func listenForSubAccounts() {
-            attachSubAccountsListener()
         }
         
         func removeSubAccountsListener() {
@@ -158,18 +156,18 @@ extension MonthView {
             }
         }
         
-        private func attachSubAccountsListener() {
+        func attachSubAccountsListener() {
             do {
                 let listener = db.collection("subAccounts").whereField("fiscalMonthId", isEqualTo: activeFiscalMonth.id).addSnapshotListener {
                     (snap, err) in
-                    
+                    print("DANLOG subaccount updating")
                     guard let docs = snap?.documents else { return }
                     
                     let subAccounts = docs.map { return try! $0.data(as: SubAccount.self) }
                     let sumOfSubAccountExpenses = subAccounts.reduce(0) {$0 + $1.expenses}
                     let sumOfSubAccountBudgets = subAccounts.reduce(0) {$0 + $1.budget}
                     self.subAccounts = subAccounts
-                    let activeFiscalMonthTotalExpenses = self.activeFiscalMonth.totalExpenses
+                    
                     if self.activeFiscalMonth.totalExpenses != sumOfSubAccountExpenses {
                         self.activeFiscalMonth.totalExpenses = sumOfSubAccountExpenses
                         print("DANLONG updating fiscal month expenses total")
@@ -177,7 +175,7 @@ extension MonthView {
                             await self.updateFiscalMonthExpenses(fiscalMonth: self.activeFiscalMonth, expenses: sumOfSubAccountExpenses)
                         }
                     }
-                    let activeFiscalMonthTotalBudget = self.activeFiscalMonth.totalBudget
+                    
                     if self.activeFiscalMonth.totalBudget != sumOfSubAccountBudgets {
                         self.activeFiscalMonth.totalBudget = sumOfSubAccountBudgets
                         print("DANLONG updating fiscal month expenses total")
