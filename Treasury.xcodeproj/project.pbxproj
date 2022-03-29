@@ -34,7 +34,6 @@
 		37C24C3327E956270059038C /* FirebaseFunctionsSwift-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = 37C24C3227E956270059038C /* FirebaseFunctionsSwift-Beta */; };
 		37C24C3527E956270059038C /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 37C24C3427E956270059038C /* FirebaseStorage */; };
 		37C24C3727E956270059038C /* FirebaseStorageSwift-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = 37C24C3627E956270059038C /* FirebaseStorageSwift-Beta */; };
-		37C24C3927E97D3E0059038C /* CurrentMonth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C24C3827E97D3E0059038C /* CurrentMonth.swift */; };
 		37C24C3B27E97DE10059038C /* ActiveBudget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C24C3A27E97DE10059038C /* ActiveBudget.swift */; };
 /* End PBXBuildFile section */
 
@@ -59,7 +58,6 @@
 		37AACAF327C18A6400F52F69 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		37AACAF527C18A6600F52F69 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		37AACAF827C18A6600F52F69 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		37C24C3827E97D3E0059038C /* CurrentMonth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentMonth.swift; sourceTree = "<group>"; };
 		37C24C3A27E97DE10059038C /* ActiveBudget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveBudget.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -137,7 +135,6 @@
 				37AACAF527C18A6600F52F69 /* Assets.xcassets */,
 				37AACAF727C18A6600F52F69 /* Preview Content */,
 				373D351B27DC853E0046DAD4 /* ViewRouter.swift */,
-				37C24C3827E97D3E0059038C /* CurrentMonth.swift */,
 				37C24C3A27E97DE10059038C /* ActiveBudget.swift */,
 			);
 			path = Treasury;
@@ -243,7 +240,6 @@
 				373D352D27DD79620046DAD4 /* AddSubAccountView.swift in Sources */,
 				37AACAF427C18A6400F52F69 /* HomeView.swift in Sources */,
 				373D352627DD0DE20046DAD4 /* Budget.swift in Sources */,
-				37C24C3927E97D3E0059038C /* CurrentMonth.swift in Sources */,
 				373D352F27DD7E810046DAD4 /* SubAccount.swift in Sources */,
 				373D353327DD9FCD0046DAD4 /* Transaction.swift in Sources */,
 				373D352027DD01DB0046DAD4 /* IndexView.swift in Sources */,

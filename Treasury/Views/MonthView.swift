@@ -12,7 +12,6 @@ import FirebaseFirestoreSwift
 
 struct MonthView: View {
     @ObservedObject var viewModel: ViewModel
-    @EnvironmentObject var currentMonth: CurrentMonth
     @EnvironmentObject var activeBudget: ActiveBudget
     
     var body: some View {
@@ -110,7 +109,7 @@ struct MonthView: View {
             
             ToolbarItem(placement: .navigationBarLeading) {
                 
-                NavigationLink(destination: YearView(viewModel: .init(activeBudget: activeBudget, currentMonth: currentMonth))) {
+                NavigationLink(destination: YearView(viewModel: .init(activeBudget: activeBudget))) {
                     
                     HStack(alignment: .center) {
                         Image(systemName: "arrowshape.turn.up.backward")

@@ -13,7 +13,6 @@ import FirebaseAuth
 struct HomeView: View {
     @ObservedObject var viewModel: ViewModel
     @EnvironmentObject var router: ViewRouter
-    @EnvironmentObject var currentMonth: CurrentMonth
     @EnvironmentObject var activeBudget: ActiveBudget
     
     var body: some View {
@@ -42,15 +41,15 @@ extension HomeView {
     class ViewModel: ObservableObject {
         @Published private(set) public var activeFiscalMonth: FiscalMonth?
         
-        private var currentMonth: CurrentMonth
         private var activeBudget: ActiveBudget
         private var viewRouter: ViewRouter
         
-        let db = Firestore.firestore()
+        private let db = Firestore.firestore()
+        private let monthName = DateFormatter()
         
-        init(currentMonth: CurrentMonth, activeBudget: ActiveBudget, viewRouter: ViewRouter) {
-            print("DANLOG init homeview>view model")
-            self.currentMonth = currentMonth
+        init(activeBudget: ActiveBudget, viewRouter: ViewRouter) {
+            monthName.timeZone = TimeZone(abbreviation: "UTC")
+            monthName.dateFormat = "MMMM"
             self.activeBudget = activeBudget
             self.viewRouter = viewRouter
             guard activeBudget.documentId != nil else {
@@ -124,7 +123,7 @@ extension HomeView {
         private func setupNewFiscalMonth() async {
             do {
                 print("DANLOG creating new activeFiscalMonth")
-                let newFiscalMonth = FiscalMonth(budgetId: activeBudget.documentId!, monthName: currentMonth.name, monthIndex: Calendar.current.component(.month, from: Date()), totalExpenses: 0, totalBudget: 0)
+                let newFiscalMonth = FiscalMonth(budgetId: activeBudget.documentId!, monthName: monthName.string(from: Date()), monthIndex: Calendar.current.component(.month, from: Date()), totalExpenses: 0, totalBudget: 0)
                 let savedFiscalMonthRef = try db.collection("fiscalMonths").addDocument(from: newFiscalMonth)
                 let savedFiscalMonth = try await savedFiscalMonthRef.getDocument().data(as: FiscalMonth.self)
                 self.activeFiscalMonth = savedFiscalMonth
@@ -157,7 +156,7 @@ extension HomeView {
 
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
-        HomeView(viewModel: .init(currentMonth: CurrentMonth(), activeBudget: ActiveBudget(), viewRouter: ViewRouter()))
+        HomeView(viewModel: .init(activeBudget: ActiveBudget(), viewRouter: ViewRouter()))
             .colorScheme(.light)
             .preferredColorScheme(.light)
     }
