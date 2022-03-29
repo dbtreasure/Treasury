@@ -101,8 +101,8 @@ extension HomeView {
                 let fiscalMonthsResult = try await db.collection("fiscalMonths").whereField("budgetId", isEqualTo: activeBudget.documentId).order(by: "createdAt", descending: false).getDocuments()
                 if let fiscalMonth = fiscalMonthsResult.documents.last {
                     let month = try fiscalMonth.data(as: FiscalMonth.self)
-                    let monthOfFiscalMonth = Calendar.current.component(.month, from: month.createdAt)
-                    if Calendar.current.component(.month, from: Date()) > monthOfFiscalMonth {
+                    
+                    if Calendar.current.component(.month, from: Date()) > month.getMonthIndex() {
                         await rollOverFiscalMonth(fiscalMonthId: month.id!)
                     } else {
                         self.activeFiscalMonth = month

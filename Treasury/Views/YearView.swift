@@ -157,11 +157,8 @@ extension YearView {
                     
                     guard let docs = snap?.documents else { return }
                     
-                    let fiscalMonths = docs.map { return try! $0.data(as: FiscalMonth.self) }
-                    self.fiscalMonths = fiscalMonths.filter {
-                        let yearOfFiscalMonth = Calendar.current.component(.year, from: $0.createdAt)
-                        return yearOfFiscalMonth == Calendar.current.component(.year, from: Date())
-                    }
+                    self.fiscalMonths = docs.map { return try! $0.data(as: FiscalMonth.self) }
+                        .filter { $0.getYear() == Calendar.current.component(.year, from: Date()) }
                     self.calculateYearlyTotal()
                 }
             } catch {

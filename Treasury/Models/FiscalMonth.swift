@@ -27,6 +27,14 @@ struct FiscalMonth: Identifiable, Codable {
         return formatter.string(from: self.createdAt) 
     }
     
+    func getMonthIndex() -> Int {
+        return Calendar.current.component(.month, from: self.createdAt)
+    }
+    
+    func getYear() -> Int {
+        return Calendar.current.component(.year, from: self.createdAt)
+    }
+    
     enum CodingKeys: String, CodingKey {
         case id
         case budgetId
