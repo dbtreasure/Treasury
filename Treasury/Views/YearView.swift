@@ -25,7 +25,7 @@ struct YearView: View {
                                 viewModel: .init(activeBudget: activeBudget, activeFiscalMonth: month, router: router)
                             )) {
                             HStack(alignment: .center, spacing: 10) {
-                                Text(month.monthName)
+                                Text(month.getMonthName())
                                     .font(.title3)
                                     .foregroundStyle(.black)
                                 Spacer()
@@ -159,7 +159,7 @@ extension YearView {
                     
                     let fiscalMonths = docs.map { return try! $0.data(as: FiscalMonth.self) }
                     self.fiscalMonths = fiscalMonths.filter {
-                        let yearOfFiscalMonth = Calendar.current.component(.year, from: Date(timeIntervalSince1970: $0.createdAt))
+                        let yearOfFiscalMonth = Calendar.current.component(.year, from: $0.createdAt)
                         return yearOfFiscalMonth == Calendar.current.component(.year, from: Date())
                     }
                     self.calculateYearlyTotal()

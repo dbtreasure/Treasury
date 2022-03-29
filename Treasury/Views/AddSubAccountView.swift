@@ -107,6 +107,6 @@ extension AddSubAccountView {
 
 struct AddSubAccountView_Previews: PreviewProvider {
     static var previews: some View {
-        AddSubAccountView(viewModel: .init(budgetId: "abc", activeFiscalMonth: FiscalMonth(budgetId: "abc", monthName: "March", monthIndex: 3, totalExpenses: 200, totalBudget: 400)))
+        AddSubAccountView(viewModel: .init(budgetId: "abc", activeFiscalMonth: FiscalMonth(budgetId: "abc", totalExpenses: 200, totalBudget: 400)))
     }
 }

@@ -45,11 +45,8 @@ extension HomeView {
         private var viewRouter: ViewRouter
         
         private let db = Firestore.firestore()
-        private let monthName = DateFormatter()
         
         init(activeBudget: ActiveBudget, viewRouter: ViewRouter) {
-            monthName.timeZone = TimeZone(abbreviation: "UTC")
-            monthName.dateFormat = "MMMM"
             self.activeBudget = activeBudget
             self.viewRouter = viewRouter
             guard activeBudget.documentId != nil else {
@@ -104,7 +101,7 @@ extension HomeView {
                 let fiscalMonthsResult = try await db.collection("fiscalMonths").whereField("budgetId", isEqualTo: activeBudget.documentId).order(by: "createdAt", descending: false).getDocuments()
                 if let fiscalMonth = fiscalMonthsResult.documents.last {
                     let month = try fiscalMonth.data(as: FiscalMonth.self)
-                    let monthOfFiscalMonth = Calendar.current.component(.month, from: Date(timeIntervalSince1970: month.createdAt))
+                    let monthOfFiscalMonth = Calendar.current.component(.month, from: month.createdAt)
                     if Calendar.current.component(.month, from: Date()) > monthOfFiscalMonth {
                         await rollOverFiscalMonth(fiscalMonthId: month.id!)
                     } else {
@@ -123,7 +120,7 @@ extension HomeView {
         private func setupNewFiscalMonth() async {
             do {
                 print("DANLOG creating new activeFiscalMonth")
-                let newFiscalMonth = FiscalMonth(budgetId: activeBudget.documentId!, monthName: monthName.string(from: Date()), monthIndex: Calendar.current.component(.month, from: Date()), totalExpenses: 0, totalBudget: 0)
+                let newFiscalMonth = FiscalMonth(budgetId: activeBudget.documentId!, totalExpenses: 0, totalBudget: 0)
                 let savedFiscalMonthRef = try db.collection("fiscalMonths").addDocument(from: newFiscalMonth)
                 let savedFiscalMonth = try await savedFiscalMonthRef.getDocument().data(as: FiscalMonth.self)
                 self.activeFiscalMonth = savedFiscalMonth

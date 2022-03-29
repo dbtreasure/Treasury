@@ -12,21 +12,24 @@ import FirebaseFirestoreSwift
 struct FiscalMonth: Identifiable, Codable {
     @DocumentID var id: String?
     var budgetId: String
-    var monthName: String
-    var monthIndex: Int
     var totalExpenses: Int
     var totalBudget: Int
-    var createdAt = Date().timeIntervalSince1970
+    var createdAt = Date()
     
     func bottomLine() -> Int {
         return self.totalBudget - totalExpenses
     }
     
+    func getMonthName() -> String {
+        let formatter = DateFormatter()
+        formatter.timeZone = .autoupdatingCurrent
+        formatter.dateFormat = "MMMM"
+        return formatter.string(from: self.createdAt) 
+    }
+    
     enum CodingKeys: String, CodingKey {
         case id
         case budgetId
-        case monthName
-        case monthIndex
         case totalExpenses
         case totalBudget
         case createdAt

@@ -97,7 +97,7 @@ struct MonthView: View {
                 }
             }
         }
-        .navigationBarTitle(viewModel.activeFiscalMonth.monthName)
+        .navigationBarTitle(viewModel.activeFiscalMonth.getMonthName())
         .padding([.leading, .trailing, .bottom])
         .navigationBarBackButtonHidden(true)
         .toolbar {
@@ -220,6 +220,6 @@ extension MonthView {
 
 struct MonthView_Previews: PreviewProvider {
     static var previews: some View {
-        MonthView(viewModel: .init(activeBudget: ActiveBudget(), activeFiscalMonth: FiscalMonth(budgetId: "abc", monthName: "March", monthIndex: 3, totalExpenses: 200, totalBudget: 400), router: ViewRouter()))
+        MonthView(viewModel: .init(activeBudget: ActiveBudget(), activeFiscalMonth: FiscalMonth(budgetId: "abc", totalExpenses: 200, totalBudget: 400), router: ViewRouter()))
     }
 }
