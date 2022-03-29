@@ -123,7 +123,10 @@ struct MonthView: View {
             }
         }
         .onAppear {
-            viewModel.attachSubAccountsListener()
+            guard viewModel.subAccountsListener != nil else {
+                viewModel.attachSubAccountsListener()
+                return
+            }
         }
         .onDisappear {
             viewModel.removeSubAccountsListener()
@@ -135,31 +138,35 @@ struct MonthView: View {
 extension MonthView {
     class ViewModel: ObservableObject {
         @Published var activeFiscalMonth: FiscalMonth
-        @Published var currentMonth: CurrentMonth?
         @Published var subAccounts = [SubAccount]()
     
         @EnvironmentObject var router: ViewRouter
         
         private var activeBudget: ActiveBudget
         private let db = Firestore.firestore()
-        private var subAccountsListener: ListenerRegistration?
+        var subAccountsListener: ListenerRegistration?
         
-        init(currentMonth: CurrentMonth, activeBudget: ActiveBudget, activeFiscalMonth: FiscalMonth, router: ViewRouter) {
+        init(activeBudget: ActiveBudget, activeFiscalMonth: FiscalMonth, router: ViewRouter) {
             self.activeFiscalMonth = activeFiscalMonth
-            self.currentMonth = currentMonth
             self.activeBudget = activeBudget
+            guard subAccountsListener != nil else {
+                self.attachSubAccountsListener()
+                return
+            }
         }
         
         func removeSubAccountsListener() {
             if let listener = self.subAccountsListener {
                 listener.remove()
+                self.subAccountsListener = nil
             }
         }
         
         func attachSubAccountsListener() {
             do {
-                let listener = db.collection("subAccounts").whereField("fiscalMonthId", isEqualTo: activeFiscalMonth.id).addSnapshotListener {
+                self.subAccountsListener = db.collection("subAccounts").whereField("fiscalMonthId", isEqualTo: activeFiscalMonth.id).addSnapshotListener {
                     (snap, err) in
+                     
                     print("DANLOG subaccount updating")
                     guard let docs = snap?.documents else { return }
                     
@@ -184,7 +191,6 @@ extension MonthView {
                         }
                     }
                 }
-                self.subAccountsListener = listener
             } catch {
                 print(error.localizedDescription)
             }
@@ -215,6 +221,6 @@ extension MonthView {
 
 struct MonthView_Previews: PreviewProvider {
     static var previews: some View {
-        MonthView(viewModel: .init(currentMonth: CurrentMonth(), activeBudget: ActiveBudget(), activeFiscalMonth: FiscalMonth(budgetId: "abc", monthName: "March", monthIndex: 3, totalExpenses: 200, totalBudget: 400), router: ViewRouter()))
+        MonthView(viewModel: .init(activeBudget: ActiveBudget(), activeFiscalMonth: FiscalMonth(budgetId: "abc", monthName: "March", monthIndex: 3, totalExpenses: 200, totalBudget: 400), router: ViewRouter()))
     }
 }

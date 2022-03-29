@@ -19,10 +19,8 @@ struct HomeView: View {
     var body: some View {
         if let activeFiscalMonth = viewModel.activeFiscalMonth {
             NavigationView {
-                MonthView(viewModel: .init(currentMonth: currentMonth, activeBudget: activeBudget, activeFiscalMonth: activeFiscalMonth,  router: router))
+                MonthView(viewModel: .init(activeBudget: activeBudget, activeFiscalMonth: activeFiscalMonth,  router: router))
             }
-            .environmentObject(currentMonth)
-            .environmentObject(activeBudget)
             .preferredColorScheme(.light)
             .accentColor(.black)
             .navigationViewStyle(.stack)

@@ -10,7 +10,6 @@ import FirebaseAuth
 import FirebaseFirestore
 
 struct YearView: View {
-    @EnvironmentObject private var currentMonth: CurrentMonth
     @EnvironmentObject private var activeBudget: ActiveBudget
     @EnvironmentObject var router: ViewRouter
     @ObservedObject var viewModel: ViewModel
@@ -23,7 +22,7 @@ struct YearView: View {
                     ForEach(viewModel.fiscalMonths, id: \.id) { month in
                         NavigationLink(
                             destination: MonthView(
-                                viewModel: .init(currentMonth: currentMonth, activeBudget: activeBudget, activeFiscalMonth: month, router: router)
+                                viewModel: .init(activeBudget: activeBudget, activeFiscalMonth: month, router: router)
                             )) {
                             HStack(alignment: .center, spacing: 10) {
                                 Text(month.monthName)
@@ -138,17 +137,16 @@ struct YearView: View {
 extension YearView {
     class ViewModel: ObservableObject {
         @Published var fiscalMonths = [FiscalMonth]()
-        private var activeBudget: ActiveBudget
-        private var currentMonth: CurrentMonth
         @Published private(set) public var yearlyExpenses: Int?
         @Published private(set) public var yearlyBudget: Int?
         @Published private(set) public var yearlyBottomLine: Int?
         
-        let db = Firestore.firestore()
+        private var activeBudget: ActiveBudget
         
-        init(activeBudget: ActiveBudget, currentMonth: CurrentMonth) {
+        private let db = Firestore.firestore()
+        
+        init(activeBudget: ActiveBudget) {
             self.activeBudget = activeBudget
-            self.currentMonth = currentMonth
             fetchFiscalMonths()
         }
         
@@ -183,7 +181,7 @@ extension YearView {
 
 struct YearView_Previews: PreviewProvider {
     static var previews: some View {
-        YearView(viewModel: .init(activeBudget: ActiveBudget(), currentMonth: CurrentMonth()))
+        YearView(viewModel: .init(activeBudget: ActiveBudget()))
     }
 }
 
